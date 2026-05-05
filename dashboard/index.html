@@ -105,8 +105,8 @@ html,body{width:100%;height:100vh;overflow:hidden;
 ═══════════════════════════════════════════════════════════ */
 #view-kaart{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg);position:relative;background:#d8ebf5;}
 #nl-map{display:block;width:100%;height:100%;}
-.prov{fill:#f5edf9;stroke:#c4a0d6;stroke-width:.6;transition:fill .2s;}
-.prov:hover{fill:#ede0f5;}
+.prov{fill:#efe8f6;stroke:#9060b0;stroke-width:1.2;transition:fill .2s;}
+.prov:hover{fill:#e4d4f0;}
 .prov-lbl{font-size:9px;fill:#9060b0;font-weight:600;font-family:Verdana,sans-serif;
   pointer-events:none;text-anchor:middle;dominant-baseline:middle;}
 .sea-label{font-size:11px;fill:#8ab8d4;font-weight:700;font-family:Verdana,sans-serif;letter-spacing:2px;}
@@ -300,12 +300,108 @@ html,body{width:100%;height:100vh;overflow:hidden;
 .aci-badge-title{font-size:.62rem;font-weight:800;text-transform:uppercase;
   letter-spacing:.6px;opacity:.8;margin-bottom:4px;}
 .aci-badge-main{font-size:1.1rem;font-weight:900;letter-spacing:-.2px;}
-.aci-badge-sub{font-size:.62rem;opacity:.75;margin-top:2px;}
-</style>
-</head>
-<body>
+/* ═══════════════════════════════════════════════════════════
+   DETAIL PANEEL
+═══════════════════════════════════════════════════════════ */
+#detail-panel{
+  position:fixed;top:0;right:0;width:420px;height:100vh;
+  background:var(--white);
+  box-shadow:-8px 0 40px rgba(99,13,128,.15);
+  z-index:2000;
+  transform:translateX(420px);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+#detail-panel.open{transform:translateX(0);}
+.dp-header{
+  padding:20px 22px 16px;
+  border-bottom:1px solid #f0f0f5;
+  flex-shrink:0;
+}
+.dp-close{
+  position:absolute;top:16px;right:18px;
+  width:32px;height:32px;border-radius:50%;
+  background:var(--grijs4);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:var(--grijs2);
+  transition:background .2s;
+}
+.dp-close:hover{background:#e0e0e8;}
+.dp-sector{font-size:.58rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:.8px;padding:3px 9px;border-radius:6px;
+  color:white;display:inline-block;margin-bottom:8px;}
+.dp-titel{font-size:1.1rem;font-weight:900;color:var(--grijs1);
+  line-height:1.3;margin-bottom:4px;}
+.dp-sub{font-size:.72rem;color:var(--grijs2);font-weight:500;}
+.dp-body{flex:1;overflow-y:auto;padding:18px 22px;scrollbar-width:none;}
+.dp-body::-webkit-scrollbar{display:none;}
+.dp-section{margin-bottom:18px;}
+.dp-section-title{
+  font-size:.6rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:.6px;color:var(--paars);margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.dp-section-title::after{content:'';flex:1;height:1px;background:#f0f0f5;}
+.dp-field{margin-bottom:10px;}
+.dp-field-label{font-size:.62rem;font-weight:700;color:var(--grijs2);
+  text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
+.dp-field-value{font-size:.80rem;color:var(--grijs1);line-height:1.55;}
+.dp-fase-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:20px;
+  font-size:.72rem;font-weight:700;
+}
+.dp-impact{display:flex;gap:3px;margin-top:3px;}
+.dp-star{font-size:.9rem;}
+.dp-criteria{display:flex;flex-direction:column;gap:5px;}
+.dp-crit{
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:.72rem;color:var(--grijs1);line-height:1.4;
+  padding:6px 10px;border-radius:8px;background:var(--grijs4);
+}
+.dp-crit-icon{font-size:.85rem;flex-shrink:0;margin-top:1px;}
+.dp-footer{
+  padding:16px 22px;border-top:1px solid #f0f0f5;
+  display:flex;gap:10px;flex-shrink:0;
+}
+.dp-btn{
+  flex:1;padding:11px 16px;border-radius:10px;border:none;
+  font-size:.78rem;font-weight:700;cursor:pointer;
+  transition:all .2s ease;display:flex;align-items:center;
+  justify-content:center;gap:6px;
+}
+.dp-btn-primary{background:var(--paars);color:var(--groen);}
+.dp-btn-primary:hover{background:#4a0960;}
+.dp-btn-secondary{background:var(--grijs4);color:var(--grijs1);}
+.dp-btn-secondary:hover{background:#e0e0e8;}
+#detail-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.25);
+  z-index:1999;opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
+}
+#detail-overlay.open{opacity:1;pointer-events:all;}
+
 
 <!-- ═══ HEADER ═══════════════════════════════════════════════ -->
+
+<!-- Detail paneel -->
+<div id="detail-overlay" onclick="closeDetail()"></div>
+<div id="detail-panel">
+  <div class="dp-header">
+    <button class="dp-close" onclick="closeDetail()">✕</button>
+    <span class="dp-sector" id="dp-sector"></span>
+    <div class="dp-titel" id="dp-titel"></div>
+    <div class="dp-sub" id="dp-sub"></div>
+  </div>
+  <div class="dp-body" id="dp-body"></div>
+  <div class="dp-footer">
+    <button class="dp-btn dp-btn-primary" id="dp-github-btn" onclick="openGithub()">
+      🔗 Open op GitHub
+    </button>
+    <button class="dp-btn dp-btn-secondary" onclick="closeDetail()">Sluiten</button>
+  </div>
+</div>
+
 <header class="header">
   <div class="hdr-left">
     <div class="tbi-mark">TBI</div>
@@ -722,6 +818,117 @@ let cur = 0, rotTimer = null, progRAF = null, progStart = null;
 let mapInited = false;
 let blScrollPos = 0;
 
+// ─────────────────────────────────────────────────────────────
+// DETAIL PANEEL
+// ─────────────────────────────────────────────────────────────
+let _currentProject = null;
+
+function openDetail(project) {
+  _currentProject = project;
+  const sc  = SECTOR_C[project.sector] || '#630d80';
+  const pmc = PMC[project.status] || PMC['Idee'];
+
+  // Header
+  document.getElementById('dp-sector').textContent = project.sector;
+  document.getElementById('dp-sector').style.background = sc;
+  document.getElementById('dp-titel').textContent = project.titel;
+  document.getElementById('dp-sub').textContent   = project.sub || '';
+
+  // Body opbouwen
+  const stars   = '⭐'.repeat(project.impact || 3);
+  const gonogo  = project.gonogo || [];
+  const gonogoHTML = gonogo.length
+    ? gonogo.map(c => `<div class="dp-crit"><span class="dp-crit-icon">✅</span><span>${c}</span></div>`).join('')
+    : '<div class="dp-crit"><span class="dp-crit-icon">📋</span><span>Nog geen criteria ingevuld — dien het initiatiefformulier in op GitHub</span></div>';
+
+  document.getElementById('dp-body').innerHTML = `
+
+    <div class="dp-section">
+      <div class="dp-section-title">Identificatie</div>
+      <div class="dp-field">
+        <div class="dp-field-label">Bedrijf</div>
+        <div class="dp-field-value">${project.bedrijf}</div>
+      </div>
+      <div class="dp-field">
+        <div class="dp-field-label">Ambassadeur</div>
+        <div class="dp-field-value">${project.ambassadeur || '—'}</div>
+      </div>
+      <div class="dp-field">
+        <div class="dp-field-label">Eigenaar initiatief</div>
+        <div class="dp-field-value">${project.eigenaar || '—'}</div>
+      </div>
+    </div>
+
+    <div class="dp-section">
+      <div class="dp-section-title">Doelstelling & Omschrijving</div>
+      <div class="dp-field">
+        <div class="dp-field-label">Beschrijving</div>
+        <div class="dp-field-value">${project.desc}</div>
+      </div>
+      ${project.doelstelling ? `<div class="dp-field">
+        <div class="dp-field-label">Doelstelling</div>
+        <div class="dp-field-value">${project.doelstelling}</div>
+      </div>` : ''}
+    </div>
+
+    <div class="dp-section">
+      <div class="dp-section-title">PMC Fase & Financiering</div>
+      <div class="dp-field">
+        <div class="dp-field-label">Fase</div>
+        <div class="dp-fase-badge" style="background:${pmc.bg};border:1.5px solid ${pmc.border};color:${pmc.text}">
+          ${project.status} — ${pmc.fin}
+        </div>
+      </div>
+      <div class="dp-field">
+        <div class="dp-field-label">Domein</div>
+        <div class="dp-field-value">${project.domein}</div>
+      </div>
+      <div class="dp-field">
+        <div class="dp-field-label">Verwachte impact</div>
+        <div class="dp-impact">${Array.from({length:5},(_,i)=>`<span class="dp-star" style="opacity:${i<project.impact?1:.2}">⭐</span>`).join('')}</div>
+      </div>
+      ${project.ebit ? `<div class="dp-field">
+        <div class="dp-field-label">EBIT potentieel</div>
+        <div class="dp-field-value" style="color:#1e8c3a;font-weight:700">${project.ebit}</div>
+      </div>` : ''}
+    </div>
+
+    <div class="dp-section">
+      <div class="dp-section-title">Go / No-Go Criteria</div>
+      <div class="dp-criteria">${gonogoHTML}</div>
+    </div>
+
+    ${project.kpi ? `<div class="dp-section">
+      <div class="dp-section-title">KPI's</div>
+      <div class="dp-field">
+        <div class="dp-field-value">${project.kpi}</div>
+      </div>
+    </div>` : ''}
+
+    ${project.succes ? `<div class="dp-section">
+      <div class="dp-section-title">Succesdefinitie</div>
+      <div class="dp-field">
+        <div class="dp-field-value">${project.succes}</div>
+      </div>
+    </div>` : ''}
+  `;
+
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('detail-overlay').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('detail-overlay').classList.remove('open');
+  _currentProject = null;
+}
+
+function openGithub() {
+  const url = _currentProject?.url ||
+    'https://github.com/TBI-AI-team/tbi-ai-backlog/issues/new?template=ai-initiatief.yml';
+  window.open(url, '_blank');
+}
+
 function goTo(idx) {
   if(rotTimer) clearTimeout(rotTimer);
   if(progRAF) cancelAnimationFrame(progRAF);
@@ -755,7 +962,7 @@ function initMap(){
     .attr('width', W).attr('height', H)
     .attr('viewBox', `0 0 ${W} ${H}`);
 
-  svg.append('rect').attr('width',W).attr('height',H).attr('fill','#d4e9f4');
+  svg.append('rect').attr('width',W).attr('height',H).attr('fill','#b8d8ea');
   svg.append('text').attr('class','sea-label')
     .attr('x', W*0.08).attr('y', H*0.3)
     .attr('transform',`rotate(-8,${W*0.08},${H*0.3})`)
@@ -797,8 +1004,12 @@ function initMap(){
      "geometry":{"type":"Polygon","coordinates":[[[5.97,51.75],[6.04,51.42],[5.86,51.12],[5.78,50.75],[6.00,50.75],[6.22,51.00],[6.20,51.38],[6.47,51.73],[5.97,51.75]]]}}
   ]};
 
-  const fills = ['#f5edf9','#f2e8f7','#f7f1fb','#ede0f5','#f0e6f8',
-                 '#f5edf9','#eadff3','#f3ecfa','#f6f0fb','#ede0f5','#f2e8f7','#f7f1fb'];
+  // Afwisselende paars-tinten per provincie voor contrast
+  const fills = [
+    '#e8d8f4','#dfc8ee','#e8d8f4','#d8c0ea',
+    '#e0ccf0','#e8d8f4','#d4bce8','#e4d0f2',
+    '#dbc4ec','#e8d8f4','#d8c0ea','#e0ccf0'
+  ];
 
   svg.selectAll('.prov')
     .data(NL.features)
@@ -850,24 +1061,29 @@ function drawPins(proj, tt, svg) {
       g.append('text').attr('class','pin-badge-txt').attr('x',11).attr('y',-11)
         .text(b.projecten.length);
     }
-    // Tooltip
+    // Tooltip + click
     g.style('cursor','pointer')
       .on('mouseover', function(event){
+        if(b.projecten.length === 1) return; // single project: skip tooltip, use click
         const pHTML = b.projecten.map(p=>`
           <div class="tt-proj">
-            <div class="tt-dot" style="background:${SC[p.status].dot}"></div>
+            <div class="tt-dot" style="background:${SC[p.status]?.dot||'#630d80'}"></div>
             <span>${p.titel}</span>
           </div>`).join('');
         tt.innerHTML=`<span class="tt-sector" style="background:${col}">${b.sector}</span>
-          <div class="tt-name">${b.bedrijf}</div>${pHTML}`;
+          <div class="tt-name">${b.bedrijf}</div>${pHTML}
+          <div style="font-size:.6rem;color:#888;margin-top:6px;text-align:center">Klik om te openen</div>`;
         const r = document.getElementById('view-kaart').getBoundingClientRect();
-        const ex = event.clientX - r.left;
-        const ey = event.clientY - r.top;
-        tt.style.left = (ex + 16)+'px';
-        tt.style.top  = Math.max(10, ey - 30)+'px';
+        tt.style.left = (event.clientX - r.left + 16)+'px';
+        tt.style.top  = Math.max(10, event.clientY - r.top - 30)+'px';
         tt.style.opacity='1';
       })
-      .on('mouseout', ()=>{ tt.style.opacity='0'; });
+      .on('mouseout', ()=>{ tt.style.opacity='0'; })
+      .on('click', function(){
+        tt.style.opacity='0';
+        // Als meerdere projecten: open het eerste, gebruiker kan dan via GitHub de rest zien
+        openDetail(b.projecten[0]);
+      });
   });
 }
 
@@ -900,12 +1116,14 @@ function drawPins(proj, tt, svg) {
       const card = document.createElement('div');
       card.className='proj-card';
       card.style.borderLeftColor=sc2;
+      card.style.cursor='pointer';
       card.innerHTML=`<div class="pc-co">${p.bedrijf}</div>
         <div class="pc-title">${p.titel}</div>
         <div class="pc-foot">
           <span class="pc-tag" style="background:${sc2}">${p.domein}</span>
           <div class="pc-impact">${dots}</div>
         </div>`;
+      card.addEventListener('click', ()=>openDetail(p));
       col.appendChild(card);
     });
     cols.appendChild(col);
@@ -923,6 +1141,7 @@ function drawPins(proj, tt, svg) {
     const impactPct = (p.impact/5)*100;
     const card = document.createElement('div');
     card.className='bl-card';
+    card.style.cursor='pointer';
     card.innerHTML=`<div class="bl-top">
       <div class="bl-header">
         <div class="bl-co" style="color:${sc}">${p.bedrijf}</div>
@@ -940,6 +1159,7 @@ function drawPins(proj, tt, svg) {
         <div class="bl-impact-label">Impact</div>
       </div>
     </div>`;
+    card.addEventListener('click', ()=>openDetail(p));
     grid.appendChild(card);
   });
 
