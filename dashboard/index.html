@@ -880,14 +880,14 @@ function initMap(){
 
   svg.append('rect').attr('width',W).attr('height',H).attr('fill','#b8d8ea');
   svg.append('text').attr('class','sea-label')
-    .attr('x', W*0.08).attr('y', H*0.3)
-    .attr('transform',`rotate(-8,${W*0.08},${H*0.3})`)
+    .attr('x', W*0.15).attr('y', H*0.35)
+    .attr('transform',`rotate(-8,${W*0.15},${H*0.35})`)
     .text('NOORDZEE');
 
   const proj = d3.geoMercator()
-    .center([5.28, 52.20])
-    .scale(W * 14.2)
-    .translate([W * 0.46, H * 0.52]);
+    .center([5.28, 52.25])
+    .scale(W * 8.5)
+    .translate([W * 0.52, H * 0.50]);
 
   const path = d3.geoPath().projection(proj);
   const tt   = document.getElementById('map-tt');
