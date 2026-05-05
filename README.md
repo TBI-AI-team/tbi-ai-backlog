@@ -176,3 +176,4 @@ Via het GitHub Issue (notifications), het live dashboard, of de maandelijkse AI 
 
 *TBI AI Team — Innovatieve ICT-oplossingen, SSC ICT*
 *Contactpersoon: [ai-team@tbi.nl](mailto:ai-team@tbi.nl)*
+ 
