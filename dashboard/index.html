@@ -314,7 +314,7 @@ html,body{width:100%;height:100vh;overflow:hidden;
       <div class="hdr-title">AI Team — Innovation Dashboard</div>
       <div class="hdr-sub">
         <span class="live-dot"></span>
-        21 bedrijven &nbsp;·&nbsp; 15 AI-projecten &nbsp;·&nbsp; ACI-strategie × SparkOptimus
+        SparkOptimus AI Strategie v2.0 &nbsp;·&nbsp; 13 TBI-brede initiatieven &nbsp;·&nbsp; EBIT +€5.1–7.7M/jr &nbsp;·&nbsp; roadmap 2026–2028
       </div>
     </div>
   </div>
@@ -408,7 +408,200 @@ const SECTOR_C = {
   TECHNIEK:'#630d80', BOUW:'#2a8a2a', INFRA:'#1489cc', HOLDING:'#404040'
 };
 
+// ═══════════════════════════════════════════════════════════════════════════
+// PROJECTDATA — BRON: SparkOptimus AI Strategie TBI v2.0 (december 2025)
+// 13 TBI-brede geprioriteerde initiatieven + bestaande lopende initiatieven
+// ═══════════════════════════════════════════════════════════════════════════
 const PROJECTS = [
+
+  // ── TBI-BREED (beheerd door TBI AI expertteam, pin: Weena 505 Rotterdam) ──
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9237, lng:4.4725,
+   titel:'Kennisbank Q&A assistent', sub:'Alle ondernemingen — initiatief #1',
+   status:'Prototype',
+   domein:'Ondersteuning generieke functies', impact:5,
+   ebit:'€0.8–1.2M/jr', fin:'Holding fonds',
+   desc:'Medewerkers (monteurs, werkvoorbereiders) stellen via een gebruikersvriendelijke tool vragen aan de eigen kennisbank. Relevant voor 95% van werknemers, besparing 2u+/wk/FTE.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9238, lng:4.4727,
+   titel:'AI Document Generatie', sub:'Alle ondernemingen — initiatief #2',
+   status:'Prototype',
+   domein:'Project-/Contractadministratie', impact:5,
+   ebit:'€0.6–1.0M/jr', fin:'Holding fonds',
+   desc:'Gen AI assembleert documenten (tech dossiers, handleidingen, rapportages) door gegevens uit projectsystemen, ERP en historische data samen te brengen. Besparing ~1u/wk bij 60% van werknemers.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9236, lng:4.4723,
+   titel:'Pre-project Risicoanalyse', sub:'Bouw & Infra — initiatief #3',
+   status:'Prototype',
+   domein:'Risicobeheersing', impact:5,
+   ebit:'>€400k faalkosten/jr', fin:'Holding fonds',
+   desc:'Gen AI-gedreven risicoanalyse: documenten worden in de pre-projectfase gecheckt op vooraf gedefinieerde risicocriteria zodat potentiële faalkosten vroeg worden gesignaleerd.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9239, lng:4.4722,
+   titel:'Rapportage Generator', sub:'Alle ondernemingen — initiatief #4',
+   status:'Idee',
+   domein:'Project-/Contractadministratie', impact:3,
+   ebit:'€0.2–0.4M/jr', fin:'Holding fonds',
+   desc:'Automatisch genereren van week- en maandrapportages voor klanten en opdrachtgevers op basis van actuele projectdata, voortgang en kosten.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9235, lng:4.4726,
+   titel:'Predictive Maintenance (TBI-breed)', sub:'Techniek & Infra — initiatief #5',
+   status:'Prototype',
+   domein:'Voorspellend onderhoud', impact:4,
+   ebit:'€0.4–0.8M/jr', fin:'Holding fonds',
+   desc:'Voorspel onderhoud bij klanten door predictive maintenance op basis van sensor-, storings- en trenddata. Hogere klanttevredenheid door minder downtime en storingen.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9234, lng:4.4728,
+   titel:'Sales Intelligence', sub:'Alle ondernemingen — initiatief #6',
+   status:'Idee',
+   domein:'Tenders en aanbestedingen', impact:3,
+   ebit:'€0.3–0.5M/jr', fin:'Holding fonds',
+   desc:'Identificeer saleskansen op basis van openbare data (vergunningen, marktontwikkelingen, tenders). Hogere conversie door betere marktselectie en timing.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9240, lng:4.4720,
+   titel:'Spraak Shift Memo', sub:'Techniek veld — initiatief #7',
+   status:'Idee',
+   domein:'Realisatie, onderhoud & service', impact:3,
+   ebit:'€0.2–0.3M/jr', fin:'Holding fonds',
+   desc:'Medewerkers sluiten hun shift af met een spraakmemo. AI genereert automatisch een samenvatting, actiepunten en veiligheidsmeldingen.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9241, lng:4.4719,
+   titel:'AI Frontoffice Klantvragen', sub:'Alle ondernemingen — initiatief #8',
+   status:'Idee',
+   domein:'Klantervaring verbeteren', impact:4,
+   ebit:'€0.3–0.6M/jr', fin:'Holding fonds',
+   desc:'AI-frontoffice beantwoordt klantvragen (garantiecheck, materiaalspecs, storingen), filtert en adviseert, en zet complexe cases door naar medewerkers.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9242, lng:4.4721,
+   titel:'Tender & Contract Analyse', sub:'Bouw & Infra — initiatief #9',
+   status:'Idee',
+   domein:'Tenders en aanbestedingen', impact:4,
+   ebit:'€0.4–0.7M/jr', fin:'Holding fonds',
+   desc:'Automatisch filteren en analyseren van tenderdocumenten en contracten op risico\'s, tegenstrijdigheden en relevante clausules.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9243, lng:4.4718,
+   titel:'Werkplan Generator', sub:'Bouw & Infra — initiatief #10',
+   status:'Idee',
+   domein:'Planning', impact:5,
+   ebit:'€0.5–0.9M/jr', fin:'Holding fonds',
+   desc:'Genereer werkplannen op basis van projectdocumentatie, afspraken en tekeningen. Besparing ~2-4u per project; hogere risicobeheersing en minder misverstanden.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9233, lng:4.4729,
+   titel:'Planningsoptimalisatie', sub:'Alle ondernemingen — initiatief #11',
+   status:'Idee',
+   domein:'Planning', impact:4,
+   ebit:'€0.3–0.5M/jr', fin:'Holding fonds',
+   desc:'Genereer planningsvoorstellen voor werkzaamheden op basis van projectdocumentatie, capaciteit en beperkingen.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9232, lng:4.4730,
+   titel:'AI Personeelsplanning', sub:'Alle ondernemingen — initiatief #12',
+   status:'Idee',
+   domein:'Planning', impact:3,
+   ebit:'€0.2–0.3M/jr', fin:'Holding fonds',
+   desc:'Maak personeelsplanningen op basis van certificeringen, standaarden, inzetbeperkingen en projectvereisten.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9231, lng:4.4731,
+   titel:'CO₂ Impact Calculator', sub:'Alle ondernemingen — initiatief #13',
+   status:'Idee',
+   domein:'Duurzaamheid & CO₂', impact:4,
+   ebit:'1.5–2.5 kTon CO₂/jr', fin:'Holding fonds',
+   desc:'Bereken CO₂-impact van materialen en genereer alternatieven met lagere emissies. Ondersteunt betere materiaalkeuzes in ontwerp- en aanbestedingsfase.'},
+
+  // ── AI VALUE SCAN ROLLOUT ─────────────────────────────────────────────────
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9237, lng:4.4726,
+   titel:'AI Value Scan Rollout', sub:'SparkOptimus × TBI — 21 bedrijven',
+   status:'Scale-Up',
+   domein:'Strategie & Adoptie', impact:5,
+   ebit:'Fundament €5.1–7.7M EBIT', fin:'Volledig bedrijf',
+   desc:'AI Value Scans bij alle TBI-bedrijven (start Q4 2025 met 5). Resulteert in 130+ AI-initiatieven waarvan ~70% TBI-breed relevant. Fundeert de volledige AI-roadmap 2026–2028.'},
+
+  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9236, lng:4.4724,
+   titel:'ACI Framework — TBI AI Expertteam', sub:'Augmented Collective Intelligence',
+   status:'Go-to-Market',
+   domein:'Strategie & Adoptie', impact:5,
+   ebit:'€8–14M holding investering 2026–2028', fin:'Bedrijf primair',
+   desc:'Oprichting TBI AI expertteam (7→16 FTE in 2026–2028). AI als activator van humaan kapitaal. Team realiseert geprioriteerde initiatieven, ondersteunt ondernemingen, borgt kennis.'},
+
+  // ── BESTAANDE LOPENDE INITIATIEVEN (per bedrijf) ─────────────────────────
+
+  {bedrijf:'Comfort Partners', sector:'TECHNIEK', lat:52.2989, lng:4.9553,
+   titel:'Willie Warmtepomp', sub:'AI chatbot voor monteurs',
+   status:'Pilots',
+   domein:'Voorspellend onderhoud', impact:4,
+   ebit:'Hogere klanttevredenheid', fin:'Co-financiering',
+   desc:'AI-chatbot geeft monteurs direct toegang tot correcte, specifieke documentatie voor installatie en onderhoud van warmtepompen. Erkend als sterk voorbeeld in AI-assessment.'},
+
+  {bedrijf:'Comfort Partners', sector:'TECHNIEK', lat:52.2990, lng:4.9555,
+   titel:'Voice & Chatbot Bewoners', sub:'24/7 bewonersassistent',
+   status:'Go-to-Market',
+   domein:'Klantervaring verbeteren', impact:3,
+   ebit:'Vermindering servicedruk', fin:'Eigen budget',
+   desc:'AI-assistent (via telefoon en chat) beantwoordt 24/7 bewonersvragen, helpt bij het maken en wijzigen van afspraken, en lost simpele storingsproblemen op.'},
+
+  {bedrijf:'J.P. van Eesteren', sector:'BOUW', lat:52.0268, lng:4.6820,
+   titel:'Ortedo AI', sub:'Tender documentatie automatisering',
+   status:'Go-to-Market',
+   domein:'Tenders en aanbestedingen', impact:4,
+   ebit:'Tijdsbesparing werkvoorbereiding', fin:'Eigen budget',
+   desc:'AI-tool die tenderdocumentatie automatisch stempelt, een documentenlijst genereert en vergelijkt met die van adviseurs en opdrachtgever. Hoge Copilot adoptie als basis.'},
+
+  {bedrijf:'Mobilis', sector:'INFRA', lat:51.9532, lng:4.5568,
+   titel:'Contractscan', sub:'AI voor contractmanagers',
+   status:'Pilots',
+   domein:'Tenders en aanbestedingen', impact:4,
+   ebit:'Risicoreductie contracten', fin:'Co-financiering',
+   desc:'AI-chatbot voor contractmanagers om documenten te scannen, tegenstrijdigheden te vinden en vragen te beantwoorden. Klein starten, snel leren — aanpak als best practice benoemd.'},
+
+  {bedrijf:'Croonwolter&dros', sector:'TECHNIEK', lat:51.9532, lng:4.5563,
+   titel:'Projectbeheersing Tobias', sub:'Virtuele assistent projectmanagement',
+   status:'Pilots',
+   domein:'Risicobeheersing', impact:4,
+   ebit:'Betere besluitvorming', fin:'Co-financiering',
+   desc:'AI-gestuurde virtuele assistent helpt bij complexe projectbeheersing door inzicht te geven in keuzes, contracten en verplichtingen. Croonwolter&dros heeft eigen AI team.'},
+
+  {bedrijf:'Croonwolter&dros', sector:'TECHNIEK', lat:51.9534, lng:4.5565,
+   titel:'ArmaturenVisionTool', sub:'Computer vision calculatie',
+   status:'Go-to-Market',
+   domein:'Engineering en ontwerp', impact:4,
+   ebit:'Meerdere dagen calculatiewerk bespaard', fin:'Eigen budget',
+   desc:'AI-vision tool telt automatisch armaturen op bouwtekeningen. Bespaart meerdere dagen aan calculatiewerk voor de divisie Utiliteit. Bewezen in productie.'},
+
+  {bedrijf:'Croonwolter&dros', sector:'TECHNIEK', lat:51.9533, lng:4.5564,
+   titel:'Inkoopoptimalisatie', sub:'AI-pilot inkoop advisering',
+   status:'Pilots',
+   domein:'Tenders en aanbestedingen', impact:3,
+   ebit:'35% betere leverancierskeuze', fin:'Co-financiering',
+   desc:'AI-pilot die inkopers adviseert op basis van prijzen, voordelen en raamcontracten. Uit vooronderzoek bleek dat in 35% van gevallen niet de goedkoopste leverancier werd gekozen.'},
+
+  {bedrijf:'Voorbij Funderingstechniek', sector:'INFRA', lat:52.4251, lng:4.7741,
+   titel:'Betonverbruiksmodel', sub:'AI op basis van sonderingsdata',
+   status:'Prototype',
+   domein:'Engineering en ontwerp', impact:4,
+   ebit:'Competitievere aanbestedingsprijzen', fin:'Co-financiering',
+   desc:'AI-gestuurd betonverbruiksmodel voorspelt verbruik op basis van sonderingsdata, waardoor concurrerende prijzen kunnen worden aangeboden. Uitgevoerd door Croonwolter&dros AI team.'},
+
+  {bedrijf:'MDB', sector:'BOUW', lat:52.0210, lng:4.6152,
+   titel:'Vrachtwagenplanning', sub:'AI transport optimalisatie',
+   status:'Prototype',
+   domein:'Planning', impact:3,
+   ebit:'Efficiëntere logistiek', fin:'Co-financiering',
+   desc:'AI-model voorspelt maximale vrachtlading per wagen op basis van transportdata en ondersteunt planners bij het optimaliseren van ladingen met onregelmatige objectvormen.'},
+
+  {bedrijf:'ERA Contour', sector:'BOUW', lat:52.0419, lng:4.5052,
+   titel:'AI Werkvoorbereiding ERA', sub:'Prioriteit uit Value Scan',
+   status:'Prototype',
+   domein:'Planning', impact:5,
+   ebit:'Grootste EBIT potentieel bouw', fin:'Co-financiering',
+   desc:'Uit de ERA Contour AI Value Scan als hoogst geprioriteerd initiatief: AI-ondersteuning bij werkvoorbereiding voor seriematige woningbouw. BIM-data als basis voor automatisering.'},
+
+  {bedrijf:'Koopmans Bouwgroep', sector:'BOUW', lat:52.9586, lng:5.9302,
+   titel:'Digitaal Bouwen × AI', sub:'Business & SSC samenwerking',
+   status:'Idee',
+   domein:'Engineering en ontwerp', impact:4,
+   ebit:'Nader te bepalen', fin:'Holding fonds',
+   desc:'Koopmans werkt nauw samen tussen digitaal bouwen, business en SSC ICT. Erkend als sterk voorbeeld van business-IT samenwerking. Concrete AI-toepassing in inventarisatie.'},
+];
   // Bronnen: werkenbij.tbi.nl/contact + individuele bedrijfswebsites, geocoded via OSM Nominatim
   {bedrijf:'Croonwolter&dros', sector:'TECHNIEK', lat:51.9532, lng:4.5563,
    titel:'AI Predictief Onderhoud', sub:'Installaties & gebouwbeheer',
@@ -562,13 +755,10 @@ function initMap(){
     .attr('width', W).attr('height', H)
     .attr('viewBox', `0 0 ${W} ${H}`);
 
-  // Sea background
   svg.append('rect').attr('width',W).attr('height',H).attr('fill','#d4e9f4');
-
-  // Subtle sea label
   svg.append('text').attr('class','sea-label')
-    .attr('x', W*0.12).attr('y', H*0.35)
-    .attr('transform',`rotate(-8,${W*0.12},${H*0.35})`)
+    .attr('x', W*0.08).attr('y', H*0.3)
+    .attr('transform',`rotate(-8,${W*0.08},${H*0.3})`)
     .text('NOORDZEE');
 
   const proj = d3.geoMercator()
@@ -579,54 +769,61 @@ function initMap(){
   const path = d3.geoPath().projection(proj);
   const tt   = document.getElementById('map-tt');
 
-  // Load provinces
-  fetch('https://cartomap.github.io/nl/wgs84/provincie_2023.geojson')
-    .then(r => { if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-    .then(geo => {
-      // Province fills with subtle variation
-      const fills = ['#f5edf9','#f2e8f7','#f7f1fb','#ede0f5','#f0e6f8',
-                     '#f5edf9','#eadff3','#f3ecfa','#f6f0fb','#ede0f5',
-                     '#f2e8f7','#f7f1fb'];
-      svg.selectAll('.prov')
-        .data(geo.features)
-        .enter().append('path')
-        .attr('class','prov')
-        .attr('d', path)
-        .attr('fill', (_,i) => fills[i % fills.length])
-        .attr('opacity',0)
-        .transition().duration(500).delay((_,i)=>i*40)
-        .attr('opacity',1);
+  // Inline GeoJSON — 12 Nederlandse provincies (geen externe fetch nodig)
+  const NL = {"type":"FeatureCollection","features":[
+    {"type":"Feature","properties":{"statnaam":"Groningen"},
+     "geometry":{"type":"Polygon","coordinates":[[[6.84,53.40],[7.22,53.32],[7.09,53.00],[6.74,52.96],[6.47,53.07],[6.52,53.26],[6.84,53.40]]]}},
+    {"type":"Feature","properties":{"statnaam":"Friesland"},
+     "geometry":{"type":"Polygon","coordinates":[[[4.89,53.22],[5.45,53.44],[6.08,53.36],[6.47,53.07],[6.13,52.86],[5.82,52.72],[5.14,52.82],[4.89,53.22]]]}},
+    {"type":"Feature","properties":{"statnaam":"Drenthe"},
+     "geometry":{"type":"Polygon","coordinates":[[[6.47,53.07],[6.74,52.96],[7.09,53.00],[6.98,52.64],[6.69,52.49],[6.39,52.52],[6.13,52.86],[6.47,53.07]]]}},
+    {"type":"Feature","properties":{"statnaam":"Overijssel"},
+     "geometry":{"type":"Polygon","coordinates":[[[6.13,52.86],[6.39,52.52],[6.69,52.49],[6.98,52.64],[7.04,52.38],[6.76,52.12],[6.41,52.06],[6.08,52.25],[5.82,52.44],[5.82,52.72],[6.13,52.86]]]}},
+    {"type":"Feature","properties":{"statnaam":"Flevoland"},
+     "geometry":{"type":"Polygon","coordinates":[[[5.14,52.82],[5.82,52.72],[5.82,52.44],[5.52,52.18],[5.14,52.24],[5.05,52.54],[5.14,52.82]]]}},
+    {"type":"Feature","properties":{"statnaam":"Gelderland"},
+     "geometry":{"type":"Polygon","coordinates":[[[5.82,52.44],[6.08,52.25],[6.41,52.06],[6.76,52.12],[6.92,51.86],[6.47,51.73],[5.97,51.75],[5.57,51.86],[5.50,52.05],[5.52,52.18],[5.82,52.44]]]}},
+    {"type":"Feature","properties":{"statnaam":"Utrecht"},
+     "geometry":{"type":"Polygon","coordinates":[[[5.05,52.54],[5.52,52.18],[5.50,52.05],[5.23,51.97],[4.98,52.02],[4.85,52.18],[4.90,52.42],[5.05,52.54]]]}},
+    {"type":"Feature","properties":{"statnaam":"Noord-Holland"},
+     "geometry":{"type":"Polygon","coordinates":[[[4.72,52.38],[4.90,52.42],[4.85,52.18],[4.98,52.02],[5.14,52.24],[5.14,52.82],[4.89,53.22],[4.72,52.96],[4.62,52.70],[4.50,52.46],[4.72,52.38]]]}},
+    {"type":"Feature","properties":{"statnaam":"Zuid-Holland"},
+     "geometry":{"type":"Polygon","coordinates":[[[4.06,51.90],[4.50,52.46],[4.62,52.70],[4.72,52.38],[4.50,52.20],[4.48,52.16],[4.72,52.02],[4.98,52.02],[4.85,52.18],[4.56,52.06],[4.24,51.97],[4.12,51.82],[4.06,51.90]]]}},
+    {"type":"Feature","properties":{"statnaam":"Zeeland"},
+     "geometry":{"type":"Polygon","coordinates":[[[3.84,51.32],[4.24,51.50],[4.56,51.48],[4.56,51.72],[4.30,51.82],[4.12,51.82],[3.98,51.68],[3.70,51.62],[3.56,51.46],[3.84,51.32]]]}},
+    {"type":"Feature","properties":{"statnaam":"Noord-Brabant"},
+     "geometry":{"type":"Polygon","coordinates":[[[4.12,51.82],[4.30,51.82],[4.56,51.72],[4.56,51.48],[4.78,51.38],[5.00,51.28],[5.40,51.22],[5.75,51.28],[6.04,51.42],[5.97,51.75],[5.57,51.86],[5.23,51.97],[4.98,52.02],[4.72,52.02],[4.48,52.16],[4.24,51.97],[4.12,51.82]]]}},
+    {"type":"Feature","properties":{"statnaam":"Limburg"},
+     "geometry":{"type":"Polygon","coordinates":[[[5.97,51.75],[6.04,51.42],[5.86,51.12],[5.78,50.75],[6.00,50.75],[6.22,51.00],[6.20,51.38],[6.47,51.73],[5.97,51.75]]]}}
+  ]};
 
-      // Province name labels
-      svg.selectAll('.prov-lbl')
-        .data(geo.features)
-        .enter().append('text')
-        .attr('class','prov-lbl')
-        .attr('transform', d => `translate(${path.centroid(d)})`)
-        .text(d => d.properties.statnaam || d.properties.name || '')
-        .attr('opacity',0)
-        .transition().delay(600).duration(400)
-        .attr('opacity',0.9);
+  const fills = ['#f5edf9','#f2e8f7','#f7f1fb','#ede0f5','#f0e6f8',
+                 '#f5edf9','#eadff3','#f3ecfa','#f6f0fb','#ede0f5','#f2e8f7','#f7f1fb'];
 
-      drawPins(proj, tt, svg);
-    })
-    .catch(() => {
-      // Fallback: world atlas country outline
-      fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-10m.json')
-        .then(r=>r.json())
-        .then(world=>{
-          const countries = topojson.feature(world, world.objects.countries);
-          const nl = countries.features.find(f=>f.id==='528'||f.id===528);
-          if(nl){
-            svg.append('path').datum(nl).attr('class','prov').attr('d',path);
-          }
-          drawPins(proj, tt, svg);
-        }).catch(() => drawPins(proj, tt, svg));
-    });
+  svg.selectAll('.prov')
+    .data(NL.features)
+    .enter().append('path')
+    .attr('class','prov')
+    .attr('d', path)
+    .attr('fill', (_,i) => fills[i % fills.length])
+    .attr('opacity',0)
+    .transition().duration(500).delay((_,i)=>i*40)
+    .attr('opacity',1);
 
-  // Stats
-  const totalP  = PROJECTS.length;
-  const active  = PROJECTS.filter(p=>['Experiment','Scale','Operate'].includes(p.status)).length;
+  svg.selectAll('.prov-lbl')
+    .data(NL.features)
+    .enter().append('text')
+    .attr('class','prov-lbl')
+    .attr('transform', d => `translate(${path.centroid(d)})`)
+    .text(d => d.properties.statnaam)
+    .attr('opacity',0)
+    .transition().delay(600).duration(400)
+    .attr('opacity',0.9);
+
+  drawPins(proj, tt, svg);
+
+  const totalP = PROJECTS.length;
+  const active = PROJECTS.filter(p=>['Pilots','Go-to-Market','Scale-Up'].includes(p.status)).length;
   document.getElementById('map-stats').innerHTML = `
     <div class="map-stat"><div class="map-stat-n">${BEDRIJVEN.length}</div><div class="map-stat-l">Bedrijven</div></div>
     <div class="map-stat"><div class="map-stat-n">${totalP}</div><div class="map-stat-l">Projecten</div></div>
@@ -870,4 +1067,3 @@ rotTimer=setTimeout(()=>goTo(1),VIEW_DUR);
 </script>
 </body>
 </html>
- 
