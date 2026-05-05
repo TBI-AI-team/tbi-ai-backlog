@@ -105,8 +105,8 @@ html,body{width:100%;height:100vh;overflow:hidden;
 ═══════════════════════════════════════════════════════════ */
 #view-kaart{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg);position:relative;background:#d8ebf5;}
 #nl-map{display:block;width:100%;height:100%;}
-.prov{fill:#efe8f6;stroke:#9060b0;stroke-width:1.2;transition:fill .2s;}
-.prov:hover{fill:#e4d4f0;}
+.prov{stroke:#7040a0;stroke-width:1.5;transition:fill .2s;}
+.prov:hover{opacity:.85;}
 .prov-lbl{font-size:9px;fill:#9060b0;font-weight:600;font-family:Verdana,sans-serif;
   pointer-events:none;text-anchor:middle;dominant-baseline:middle;}
 .sea-label{font-size:11px;fill:#8ab8d4;font-weight:700;font-family:Verdana,sans-serif;letter-spacing:2px;}
@@ -1004,11 +1004,11 @@ function initMap(){
      "geometry":{"type":"Polygon","coordinates":[[[5.97,51.75],[6.04,51.42],[5.86,51.12],[5.78,50.75],[6.00,50.75],[6.22,51.00],[6.20,51.38],[6.47,51.73],[5.97,51.75]]]}}
   ]};
 
-  // Afwisselende paars-tinten per provincie voor contrast
+  // Duidelijk afwisselende kleuren zodat grenzen zichtbaar zijn
   const fills = [
-    '#e8d8f4','#dfc8ee','#e8d8f4','#d8c0ea',
-    '#e0ccf0','#e8d8f4','#d4bce8','#e4d0f2',
-    '#dbc4ec','#e8d8f4','#d8c0ea','#e0ccf0'
+    '#e8d5f5','#d4e8c8','#e8d5f5','#d4e8c8',
+    '#e8d5f5','#d4e8c8','#e8d5f5','#d4e8c8',
+    '#e8d5f5','#d4e8c8','#e8d5f5','#d4e8c8'
   ];
 
   svg.selectAll('.prov')
