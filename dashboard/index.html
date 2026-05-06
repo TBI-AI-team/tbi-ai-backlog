@@ -609,6 +609,10 @@ const STAGE_DESCS = {
 };
 // Legacy alias so SC still works (used by backlog cards)
 const SC = PMC;
+// Veilige PMC-opzoeking — nooit undefined
+function safePMC(status) {
+  return PMC[status] || PMC['Idee'];
+}
 
 const SECTOR_C = {
   TECHNIEK:'#630d80', BOUW:'#2a8a2a', INFRA:'#1489cc', HOLDING:'#404040'
@@ -851,7 +855,7 @@ function openDetail(project) {
   if (!project) return;  // guard tegen undefined
   _currentProject = project;
   const sc  = SECTOR_C[project.sector] || '#630d80';
-  const pmc = PMC[project.status] || PMC['Idee'];
+  const pmc = safePMC(project.status);
 
   // Header
   document.getElementById('dp-sector').textContent = project.sector;
@@ -962,7 +966,10 @@ function goTo(idx) {
   cur = ((idx % views.length) + views.length) % views.length;
   views[cur].classList.add('active');
   pills[cur].classList.add('active');
-  if(cur === 0 && !mapInited){ setTimeout(initMap, 100); mapInited=true; }
+  if(cur === 0) {
+    if(!mapInited){ initMap(); mapInited=true; }
+    else if(_leafletMap) setTimeout(()=>_leafletMap.invalidateSize(), 100);
+  }
   prog.style.transition='none'; prog.style.width='0%';
   progStart = performance.now();
   (function tick(){
@@ -1066,7 +1073,7 @@ function initMap(){
 
     // Build popup
     const projRows = b.projecten.map((p,pi) => {
-      const pmc = PMC[p.status] || PMC['Idee'];
+      const pmc = safePMC(p.status);
       const idx = PROJECTS.indexOf(p);
       const safeIdx = idx >= 0 ? idx : 0;
       return '<div class="pop-proj" onclick="openDetail(PROJECTS[' + safeIdx + '])">' +
@@ -1322,7 +1329,7 @@ rotTimer=setTimeout(()=>goTo(1),VIEW_DUR);
 <!-- Versienummer -->
 <div style="position:fixed;bottom:14px;right:22px;font-size:.62rem;font-weight:600;
   color:rgba(99,13,128,.35);z-index:998;letter-spacing:.3px;pointer-events:none;">
-  TBI AI Dashboard v1.5 &nbsp;·&nbsp; SparkOptimus v2.0
+  TBI AI Dashboard v1.6 &nbsp;·&nbsp; SparkOptimus v2.0
 </div>
 
 </body>
