@@ -31,7 +31,7 @@
   --radius-sm:10px;
   --shadow:   0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.05);
   --shadow-lg:0 8px 32px rgba(99,13,128,.13), 0 2px 8px rgba(0,0,0,.08);
-  --dur: 18000;
+  --dur: 40000;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -176,9 +176,35 @@ html,body{width:100%;height:100vh;overflow:hidden;
   white-space:nowrap;flex-shrink:0;border:1.5px solid;
 }
 
-.map-overlay{position:absolute;z-index:500;}
+/* Filter bar */
+.map-filters{
+  top:20px;left:20px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.filter-card{
+  background:rgba(255,255,255,.97);border-radius:12px;
+  padding:10px 14px;box-shadow:var(--shadow);min-width:170px;
+}
+.filter-title{font-size:.6rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:.5px;color:var(--paars);margin-bottom:7px;}
+.filter-pills{display:flex;flex-wrap:wrap;gap:5px;}
+.fpill{
+  padding:4px 10px;border-radius:14px;font-size:.65rem;font-weight:700;
+  cursor:pointer;border:1.5px solid transparent;
+  background:var(--grijs4);color:var(--grijs2);
+  transition:all .2s;white-space:nowrap;
+}
+.fpill:hover{border-color:var(--paars);color:var(--paars);}
+.fpill.on{background:var(--paars);color:var(--groen);border-color:var(--paars);}
+.fpill.on-sector-TECHNIEK{background:#630d80;color:white;border-color:#630d80;}
+.fpill.on-sector-BOUW{background:#2a8a2a;color:white;border-color:#2a8a2a;}
+.fpill.on-sector-INFRA{background:#1489cc;color:white;border-color:#1489cc;}
+.fpill.on-sector-HOLDING{background:#404040;color:white;border-color:#404040;}
+.filter-reset{font-size:.62rem;color:var(--grijs2);cursor:pointer;margin-top:4px;
+  text-decoration:underline;display:none;}
+.filter-reset.visible{display:block;}
 .map-legend{
-  bottom:20px;left:20px;
+  bottom:20px;right:20px;
   background:rgba(255,255,255,.97);border-radius:14px;
   padding:14px 16px;box-shadow:var(--shadow);min-width:150px;
 }
@@ -482,6 +508,43 @@ html,body{width:100%;height:100vh;overflow:hidden;
   <!-- VIEW 1: KAART -->
   <div class="view active" id="view-kaart">
     <div id="map"></div>
+
+    <!-- Filters linksboven -->
+    <div class="map-overlay map-filters">
+      <div class="filter-card">
+        <div class="filter-title">Fase</div>
+        <div class="filter-pills" id="filter-fase">
+          <div class="fpill on" data-val="all" onclick="setFilter('fase','all',this)">Alle</div>
+          <div class="fpill" data-val="Idee" onclick="setFilter('fase','Idee',this)">Idee</div>
+          <div class="fpill" data-val="Prototype" onclick="setFilter('fase','Prototype',this)">Prototype</div>
+          <div class="fpill" data-val="Pilots" onclick="setFilter('fase','Pilots',this)">Pilots</div>
+          <div class="fpill" data-val="Go-to-Market" onclick="setFilter('fase','Go-to-Market',this)">Go-to-Market</div>
+          <div class="fpill" data-val="Scale-Up" onclick="setFilter('fase','Scale-Up',this)">Scale-Up</div>
+        </div>
+      </div>
+      <div class="filter-card">
+        <div class="filter-title">Sector</div>
+        <div class="filter-pills" id="filter-sector">
+          <div class="fpill on" data-val="all" onclick="setFilter('sector','all',this)">Alle</div>
+          <div class="fpill" data-val="TECHNIEK" onclick="setFilter('sector','TECHNIEK',this)">Techniek</div>
+          <div class="fpill" data-val="BOUW" onclick="setFilter('sector','BOUW',this)">Bouw</div>
+          <div class="fpill" data-val="INFRA" onclick="setFilter('sector','INFRA',this)">Infra</div>
+          <div class="fpill" data-val="HOLDING" onclick="setFilter('sector','HOLDING',this)">Holding</div>
+        </div>
+      </div>
+      <div class="filter-card">
+        <div class="filter-title">Impact</div>
+        <div class="filter-pills" id="filter-impact">
+          <div class="fpill on" data-val="0" onclick="setFilter('impact','0',this)">Alle</div>
+          <div class="fpill" data-val="5" onclick="setFilter('impact','5',this)">⭐⭐⭐⭐⭐ Transformatief</div>
+          <div class="fpill" data-val="4" onclick="setFilter('impact','4',this)">⭐⭐⭐⭐ Groot</div>
+          <div class="fpill" data-val="3" onclick="setFilter('impact','3',this)">⭐⭐⭐ Gemiddeld</div>
+        </div>
+        <div class="filter-reset" id="filter-reset-btn" onclick="resetFilters()">Reset alle filters</div>
+      </div>
+    </div>
+
+    <!-- Legenda rechtsonder -->
     <div class="map-overlay map-legend">
       <div class="legend-title">Sector</div>
       <div class="legend-item"><div class="ldot" style="background:#630d80"></div>Techniek</div>
@@ -494,6 +557,7 @@ html,body{width:100%;height:100vh;overflow:hidden;
       <div class="legend-item"><div class="ldot" style="background:#1d7a6e"></div>Pilots</div>
       <div class="legend-item"><div class="ldot" style="background:#2a7a1a"></div>Go-to-Market / Scale-Up</div>
     </div>
+
     <div class="map-overlay map-stats" id="map-stats"></div>
   </div>
 
@@ -737,7 +801,7 @@ const PROJECTS = [
    ebit:'Grootste EBIT potentieel bouw', fin:'Co-financiering',
    desc:'Uit de ERA Contour AI Value Scan als hoogst geprioriteerd initiatief: AI-ondersteuning bij werkvoorbereiding voor seriematige woningbouw. BIM-data als basis voor automatisering.'},
 
-  {bedrijf:'Koopmans Bouwgroep', sector:'BOUW', lat:52.9586, lng:5.9302,
+  {bedrijf:'Koopmans Bouwgroep', sector:'BOUW', lat:52.2159, lng:6.8181,  // Marssteden 66, Enschede
    titel:'Digitaal Bouwen × AI', sub:'Business & SSC samenwerking',
    status:'Idee',
    domein:'Engineering en ontwerp', impact:4,
@@ -770,7 +834,7 @@ setInterval(tickClock,1000); tickClock();
 // ─────────────────────────────────────────────────────────────
 // VIEW ROTATION
 // ─────────────────────────────────────────────────────────────
-const VIEW_DUR = 18000;
+const VIEW_DUR = 40000; // 40 seconden per view
 const views = document.querySelectorAll('.view');
 const pills = document.querySelectorAll('.pill');
 const prog = document.getElementById('prog');
@@ -914,6 +978,46 @@ pills.forEach((p,i) => p.addEventListener('click', ()=>goTo(i)));
 // ─────────────────────────────────────────────────────────────
 // MAP
 // ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// KAART FILTERS
+// ─────────────────────────────────────────────────────────────
+const mapFilters = { fase: 'all', sector: 'all', impact: '0' };
+let leafletMarkerRefs = []; // filled in initMap
+
+function setFilter(type, val, el) {
+  mapFilters[type] = val;
+  // Update pill UI
+  el.closest('.filter-pills').querySelectorAll('.fpill').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+  // Show/hide reset button
+  const hasFilter = mapFilters.fase!=='all' || mapFilters.sector!=='all' || mapFilters.impact!=='0';
+  document.getElementById('filter-reset-btn').classList.toggle('visible', hasFilter);
+  applyMapFilters();
+}
+
+function resetFilters() {
+  mapFilters.fase = 'all'; mapFilters.sector = 'all'; mapFilters.impact = '0';
+  document.querySelectorAll('.filter-pills .fpill').forEach(p => {
+    p.classList.remove('on');
+    if (p.dataset.val === 'all' || p.dataset.val === '0') p.classList.add('on');
+  });
+  document.getElementById('filter-reset-btn').classList.remove('visible');
+  applyMapFilters();
+}
+
+function applyMapFilters() {
+  leafletMarkerRefs.forEach(({ marker, bedrijf: b }) => {
+    const matchSector = mapFilters.sector === 'all' || b.sector === mapFilters.sector;
+    const matchFase   = mapFilters.fase   === 'all' || b.projecten.some(p => p.status === mapFilters.fase);
+    const minImpact   = parseInt(mapFilters.impact) || 0;
+    const matchImpact = minImpact === 0 || b.projecten.some(p => p.impact >= minImpact);
+    const show = matchSector && matchFase && matchImpact;
+    if (show) marker.addTo(_leafletMap);
+    else { marker.closePopup(); _leafletMap.removeLayer(marker); }
+  });
+}
+let _leafletMap = null;
+
 function initMap(){
   const map = L.map('map', {
     zoomControl: true,
@@ -940,6 +1044,7 @@ function initMap(){
     <div class="map-stat"><div class="map-stat-n">${totalP}</div><div class="map-stat-l">Projecten</div></div>
     <div class="map-stat"><div class="map-stat-n">${active}</div><div class="map-stat-l">Actief</div></div>`;
 
+  _leafletMap = map;
   const leafletMarkers = [];
 
   BEDRIJVEN.forEach(b => {
@@ -980,8 +1085,8 @@ function initMap(){
       autoPanPaddingTopLeft: [60, 130],
       autoPanPaddingBottomRight: [60, 50],
       closeButton: true,
-      autoClose: false,
-      closeOnClick: false,
+      autoClose: true,
+      closeOnClick: true,
     }).setContent(`
       <div class="pop-header">
         <div class="pop-sector">${b.sector}</div>
@@ -992,6 +1097,7 @@ function initMap(){
 
     const marker = L.marker([b.lat, b.lng], { icon }).bindPopup(popup).addTo(map);
     leafletMarkers.push({ marker, bedrijf: b });
+    leafletMarkerRefs.push({ marker, bedrijf: b });
   });
 
   // Auto-cycle door locaties zoals Volevo
@@ -1007,7 +1113,7 @@ function initMap(){
   // Start na 0.8 seconden, dan elke 8 seconden
   setTimeout(() => {
     cycleNext();
-    setInterval(cycleNext, 8000);
+    setInterval(cycleNext, 12000);
   }, 800);
 
   setTimeout(() => map.invalidateSize(), 200);
