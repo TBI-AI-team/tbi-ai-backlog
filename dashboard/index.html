@@ -332,7 +332,7 @@ html,body{width:100%;height:100vh;overflow:hidden;
   padding:3px 9px;border-radius:8px;
 }
 
-.kpi-mid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.kpi-mid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
 .phase-bar-card{
   background:var(--white);border-radius:var(--radius);
   padding:18px 18px 16px;box-shadow:var(--shadow);
@@ -1233,13 +1233,14 @@ function initMap(){
   const mid = document.getElementById('kpi-mid');
   const bot = document.getElementById('kpi-bottom');
 
+  const inProductie = PROJECTS.filter(p=>['Go-to-Market','Scale-Up'].includes(p.status)).length;
+  const hoogImpact  = PROJECTS.filter(p=>p.impact>=4).length;
+
   const kpis = [
-    {n:21, label:'TBI-bedrijven', sub:'Betrokken in AI-programma', icon:'🏢', delta:'+3 dit kwartaal'},
-    {n:PROJECTS.length, label:'AI-projecten', sub:'In de portfolio', icon:'🚀', delta:'+4 dit kwartaal'},
-    {n:PROJECTS.filter(p=>['Scale','Operate'].includes(p.status)).length,
-      label:'In Productie', sub:'Scale + Operate fase', icon:'⚡', delta:'2× vs vorig jaar'},
-    {n:Math.round(PROJECTS.filter(p=>p.impact>=4).length/PROJECTS.length*100),
-      label:'Hoog Impact', sub:'Score 4 of hoger (%)', icon:'🎯', delta:`${PROJECTS.filter(p=>p.impact>=4).length} projecten`},
+    {n:21,                  label:'TBI-bedrijven',  sub:'Betrokken in AI-programma',    icon:'🏢', delta:'+3 dit kwartaal'},
+    {n:PROJECTS.length,     label:'AI-projecten',   sub:'In de portfolio',              icon:'🚀', delta:'+4 dit kwartaal'},
+    {n:inProductie,         label:'In Productie',   sub:'Go-to-Market + Scale-Up',      icon:'⚡', delta:'2× vs vorig jaar'},
+    {n:Math.round(hoogImpact/PROJECTS.length*100), label:'Hoog Impact', sub:'Score 4 of hoger (%)', icon:'🎯', delta:`${hoogImpact} projecten`},
   ];
 
   kpis.forEach(k=>{
@@ -1253,12 +1254,13 @@ function initMap(){
     top.appendChild(el);
   });
 
-  // Phase bars
+  // PMC fase balken
   const phases = [
-    {stage:'Discover',   color:SC.Discover.dot},
-    {stage:'Experiment', color:SC.Experiment.dot},
-    {stage:'Scale',      color:SC.Scale.dot},
-    {stage:'Operate',    color:SC.Operate.dot},
+    {stage:'Idee',          color: PMC['Idee'].dot},
+    {stage:'Prototype',     color: PMC['Prototype'].dot},
+    {stage:'Pilots',        color: PMC['Pilots'].dot},
+    {stage:'Go-to-Market',  color: PMC['Go-to-Market'].dot},
+    {stage:'Scale-Up',      color: PMC['Scale-Up'].dot},
   ];
   const totalP = PROJECTS.length;
   phases.forEach(ph=>{
@@ -1277,14 +1279,13 @@ function initMap(){
     mid.appendChild(el);
   });
 
-  // Bottom strip
+  // Sectordistributie + ACI badge
   const sectors = ['TECHNIEK','BOUW','INFRA','HOLDING'];
   const sDiv = document.createElement('div');
   sDiv.innerHTML=`<div class="kpi-bottom-title">Verdeling per sector</div>
     <div class="sector-pills">${sectors.map(s=>{
       const cnt = PROJECTS.filter(p=>p.sector===s).length;
       const c = SECTOR_C[s];
-      const tc = s==='BOUW' ? c : c;
       return `<div class="sector-pill" style="background:${c}10;border:1.5px solid ${c}30">
         <div class="ldot" style="background:${c}"></div>
         <span style="font-size:.7rem;font-weight:700;color:${c}">${s}</span>
@@ -1297,26 +1298,29 @@ function initMap(){
   aci.className='aci-badge';
   aci.innerHTML=`<div class="aci-badge-title">Strategie</div>
     <div class="aci-badge-main">Augmented Collective Intelligence</div>
-    <div class="aci-badge-sub">AI als activator van humaan kapitaal · TBI 2025</div>`;
+    <div class="aci-badge-sub">AI als activator van humaan kapitaal · TBI 2025–2028</div>`;
   bot.appendChild(aci);
 
-  // Animate counters when view 3 becomes active
+  // Counter animatie — elke keer dat KPI view actief wordt
   function animCounters(){
     top.querySelectorAll('[data-target]').forEach(el=>{
       const target = parseInt(el.dataset.target);
-      let cur2=0; const step=Math.max(1,Math.ceil(target/30));
+      const isPercent = el.parentElement.querySelector('.kpi-label')?.textContent === 'Hoog Impact';
+      let cur2=0;
+      const step=Math.max(1,Math.ceil(target/30));
       const iv=setInterval(()=>{
         cur2=Math.min(cur2+step,target);
-        el.textContent=cur2+(el.parentElement.querySelector('.kpi-label').textContent==='Hoog Impact'?'%':'');
+        el.textContent=cur2+(isPercent?'%':'');
         if(cur2>=target) clearInterval(iv);
       },40);
     });
   }
-  // Trigger on first view of KPI
-  let kpiAnimated=false;
+
   const kpiObs=new MutationObserver(()=>{
-    if(views[3].classList.contains('active')&&!kpiAnimated){
-      kpiAnimated=true; animCounters();
+    if(views[3].classList.contains('active')){
+      // Reset naar 0 en heranimeer
+      top.querySelectorAll('[data-target]').forEach(el=>el.textContent='0');
+      setTimeout(animCounters, 200);
     }
   });
   kpiObs.observe(views[3],{attributes:true,attributeFilter:['class']});
@@ -1354,7 +1358,7 @@ if (document.readyState === 'complete') {
 <!-- Versienummer -->
 <div style="position:fixed;bottom:14px;right:22px;font-size:.62rem;font-weight:600;
   color:rgba(99,13,128,.35);z-index:998;letter-spacing:.3px;pointer-events:none;">
-  TBI AI Dashboard v1.8 &nbsp;·&nbsp; SparkOptimus v2.0
+  TBI AI Dashboard v1.9 &nbsp;·&nbsp; SparkOptimus v2.0
 </div>
 
 </body>
