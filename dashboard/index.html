@@ -110,7 +110,8 @@ html,body{width:100%;height:100vh;overflow:hidden;
 /* ═══════════════════════════════════════════════════════════
    VIEW 1 — KAART (Leaflet)
 ═══════════════════════════════════════════════════════════ */
-#view-kaart{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg);position:relative;}
+#view-kaart{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg);position:relative;
+  opacity:1!important;transform:none!important;transition:none!important;}
 #map{width:100%;height:100%;}
 
 /* Marker */
@@ -838,7 +839,13 @@ setInterval(tickClock,1000); tickClock();
 // ─────────────────────────────────────────────────────────────
 // VIEW ROTATION
 // ─────────────────────────────────────────────────────────────
-const VIEW_DUR = 40000; // 40 seconden per view
+const VIEW_DURS = [
+  300000,  // Kaart: 5 minuten
+   40000,  // Pipeline: 40 seconden
+   40000,  // Backlog: 40 seconden
+   40000,  // KPI: 40 seconden
+];
+const VIEW_DUR = 40000; // default fallback
 const views = document.querySelectorAll('.view');
 const pills = document.querySelectorAll('.pill');
 const prog = document.getElementById('prog');
@@ -973,11 +980,13 @@ function goTo(idx) {
   prog.style.transition='none'; prog.style.width='0%';
   progStart = performance.now();
   (function tick(){
-    const pct = Math.min((performance.now()-progStart)/VIEW_DUR*100,100);
+    const viewDur = VIEW_DURS[cur] || VIEW_DUR;
+    const pct = Math.min((performance.now()-progStart)/viewDur*100,100);
     prog.style.width = pct+'%';
     if(pct<100) progRAF=requestAnimationFrame(tick);
   })();
-  rotTimer = setTimeout(()=>goTo(cur+1), VIEW_DUR);
+  const dur = VIEW_DURS[cur] || VIEW_DUR;
+  rotTimer = setTimeout(()=>goTo(cur+1), dur);
 }
 
 pills.forEach((p,i) => p.addEventListener('click', ()=>goTo(i)));
@@ -1112,8 +1121,9 @@ function initMap(){
   function cycleNext() {
     if (!leafletMarkers.length) return;
     const { marker } = leafletMarkers[cycleIdx % leafletMarkers.length];
+    map.closePopup();
     map.setView(marker.getLatLng(), 11, { animate: true, duration: 1.2 });
-    setTimeout(() => marker.openPopup(), 1300);
+    setTimeout(() => { map.closePopup(); marker.openPopup(); }, 1400);
     cycleIdx++;
   }
 
@@ -1313,23 +1323,38 @@ function initMap(){
 })();
 
 // ─────────────────────────────────────────────────────────────
-// START
+// START — wacht op volledig geladen DOM + CSS
 // ─────────────────────────────────────────────────────────────
-// Start — kaart direct initialiseren
-setTimeout(initMap, 50);
-mapInited = true;
 progStart=performance.now();
 (function tick(){
-  const pct=Math.min((performance.now()-progStart)/VIEW_DUR*100,100);
+  const viewDur0 = VIEW_DURS[0] || VIEW_DUR;
+  const pct=Math.min((performance.now()-progStart)/viewDur0*100,100);
   prog.style.width=pct+'%';
   if(pct<100) progRAF=requestAnimationFrame(tick);
 })();
-rotTimer=setTimeout(()=>goTo(1),VIEW_DUR);
+rotTimer=setTimeout(()=>goTo(1),VIEW_DURS[0]||VIEW_DUR);
+
+// Kaart initialiseren na volledig renderen
+function startMap() {
+  if (mapInited) return;
+  mapInited = true;
+  initMap();
+  // Meerdere invalidateSize aanroepen om zeker te zijn
+  [100, 300, 600, 1000].forEach(ms =>
+    setTimeout(()=>{ if(_leafletMap) _leafletMap.invalidateSize(true); }, ms)
+  );
+}
+
+if (document.readyState === 'complete') {
+  requestAnimationFrame(()=>requestAnimationFrame(startMap));
+} else {
+  window.addEventListener('load', ()=>requestAnimationFrame(()=>requestAnimationFrame(startMap)));
+}
 </script>
 <!-- Versienummer -->
 <div style="position:fixed;bottom:14px;right:22px;font-size:.62rem;font-weight:600;
   color:rgba(99,13,128,.35);z-index:998;letter-spacing:.3px;pointer-events:none;">
-  TBI AI Dashboard v1.6 &nbsp;·&nbsp; SparkOptimus v2.0
+  TBI AI Dashboard v1.8 &nbsp;·&nbsp; SparkOptimus v2.0
 </div>
 
 </body>
