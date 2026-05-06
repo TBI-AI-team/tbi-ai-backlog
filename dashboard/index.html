@@ -778,6 +778,7 @@ let blScrollPos = 0;
 let _currentProject = null;
 
 function openDetail(project) {
+  if (!project) return;  // guard tegen undefined
   _currentProject = project;
   const sc  = SECTOR_C[project.sector] || '#630d80';
   const pmc = PMC[project.status] || PMC['Idee'];
@@ -951,16 +952,18 @@ function initMap(){
     });
 
     // Build popup
-    const projRows = b.projecten.map(p => {
+    const projRows = b.projecten.map((p,pi) => {
       const pmc = PMC[p.status] || PMC['Idee'];
-      return `<div class="pop-proj" onclick="openDetail(PROJECTS.find(x=>x.titel===\'${p.titel.replace(/'/g,"\\'")}\'))">
-        <div class="pop-dot" style="background:${pmc.dot}"></div>
-        <div class="pop-proj-info">
-          <div class="pop-proj-titel">${p.titel}</div>
-          <div class="pop-proj-sub">${p.sub}</div>
-        </div>
-        <div class="pop-proj-fase" style="background:${pmc.bg};color:${pmc.text};border:1px solid ${pmc.border}">${p.status}</div>
-      </div>`;
+      const idx = PROJECTS.indexOf(p);
+      const safeIdx = idx >= 0 ? idx : 0;
+      return '<div class="pop-proj" onclick="openDetail(PROJECTS[' + safeIdx + '])">' +
+        '<div class="pop-dot" style="background:' + pmc.dot + '"></div>' +
+        '<div class="pop-proj-info">' +
+          '<div class="pop-proj-titel">' + p.titel + '</div>' +
+          '<div class="pop-proj-sub">' + p.sub + '</div>' +
+        '</div>' +
+        '<div class="pop-proj-fase" style="background:' + pmc.bg + ';color:' + pmc.text + ';border:1.5px solid ' + pmc.border + '">' + p.status + '</div>' +
+      '</div>';
     }).join('');
 
     const popup = L.popup({
