@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TBI AI Team — Innovation Dashboard</title>
+<!-- Preconnect: laad CDNs zo vroeg mogelijk -->
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://a.basemaps.cartocdn.com">
+<link rel="preconnect" href="https://b.basemaps.cartocdn.com">
+<link rel="preconnect" href="https://c.basemaps.cartocdn.com">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
@@ -455,7 +461,7 @@ html,body{width:100%;height:100vh;overflow:hidden;
     <div class="pill" data-view="1">Pipeline</div>
     <div class="pill" data-view="2">Backlog</div>
     <div class="pill" data-view="3">KPI's</div>
-    <a href="https://github.com/TBI-AI-team/tbi-ai-backlog/issues/new?template=ai-initiatief.yml"
+    <a href="initiatief.html"
        target="_blank"
        style="text-decoration:none;margin-left:8px;">
       <div class="pill" style="background:var(--groen);color:var(--paars);border-color:var(--groen);">
@@ -919,7 +925,9 @@ function initMap(){
   });
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 18
+    subdomains: 'abcd',
+    maxZoom: 18,
+    crossOrigin: true,
   }).addTo(map);
 
   map.setView([52.35, 5.35], 7);
@@ -996,11 +1004,11 @@ function initMap(){
     cycleIdx++;
   }
 
-  // Start na 3 seconden, dan elke 8 seconden
+  // Start na 0.8 seconden, dan elke 8 seconden
   setTimeout(() => {
     cycleNext();
     setInterval(cycleNext, 8000);
-  }, 3000);
+  }, 800);
 
   setTimeout(() => map.invalidateSize(), 200);
 }
@@ -1194,8 +1202,9 @@ function initMap(){
 // ─────────────────────────────────────────────────────────────
 // START
 // ─────────────────────────────────────────────────────────────
-setTimeout(initMap,600);
-mapInited=true;
+// Start — kaart direct initialiseren
+setTimeout(initMap, 50);
+mapInited = true;
 progStart=performance.now();
 (function tick(){
   const pct=Math.min((performance.now()-progStart)/VIEW_DUR*100,100);

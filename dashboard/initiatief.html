@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TBI AI — Nieuw Initiatief indienen</title>
+<style>
+:root{
+  --paars:#630d80;--groen:#c1e62e;--cta:#a816d9;
+  --blauw:#1489cc;--grijs1:#404040;--grijs2:#7a7a8a;
+  --grijs3:#cccccc;--grijs4:#f5f5f7;--white:#fff;
+  --radius:14px;
+  --shadow:0 2px 12px rgba(99,13,128,.10),0 1px 4px rgba(0,0,0,.06);
+  --shadow-lg:0 8px 32px rgba(99,13,128,.14),0 2px 8px rgba(0,0,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{min-height:100vh;background:var(--grijs4);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Verdana,sans-serif;
+  color:var(--grijs1);-webkit-font-smoothing:antialiased;}
+
+/* ── HEADER ── */
+.hdr{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.97);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(99,13,128,.10);
+  padding:0 32px;height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 16px rgba(99,13,128,.08);
+}
+.hdr-left{display:flex;align-items:center;gap:14px;}
+.tbi-mark{background:var(--paars);color:var(--groen);width:42px;height:42px;
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:.58rem;font-weight:900;letter-spacing:1.5px;flex-shrink:0;}
+.hdr-title{font-size:1.1rem;font-weight:800;color:var(--paars);}
+.hdr-sub{font-size:.68rem;color:var(--grijs2);margin-top:2px;}
+.hdr-back{
+  display:flex;align-items:center;gap:6px;
+  font-size:.75rem;font-weight:700;color:var(--grijs2);
+  text-decoration:none;padding:8px 14px;border-radius:20px;
+  background:var(--grijs4);transition:all .2s;
+}
+.hdr-back:hover{background:#ede0f5;color:var(--paars);}
+
+/* ── PROGRESS ── */
+.progress-wrap{
+  background:var(--white);border-bottom:1px solid #f0f0f5;
+  padding:20px 32px;
+}
+.progress-steps{
+  display:flex;align-items:center;max-width:680px;margin:0 auto;
+}
+.step-item{
+  display:flex;align-items:center;gap:10px;flex:1;
+  cursor:pointer;
+}
+.step-item:last-child{flex:0;}
+.step-num{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:800;flex-shrink:0;
+  border:2px solid var(--grijs3);
+  background:var(--white);color:var(--grijs2);
+  transition:all .3s ease;
+}
+.step-num.done{background:var(--groen);border-color:var(--groen);color:var(--grijs1);}
+.step-num.active{background:var(--paars);border-color:var(--paars);color:var(--groen);}
+.step-label{font-size:.7rem;font-weight:700;color:var(--grijs2);
+  white-space:nowrap;transition:color .3s;}
+.step-label.active{color:var(--paars);}
+.step-label.done{color:var(--grijs1);}
+.step-line{flex:1;height:2px;background:var(--grijs3);
+  margin:0 8px;border-radius:1px;transition:background .3s;}
+.step-line.done{background:var(--groen);}
+
+/* ── MAIN ── */
+.main{max-width:720px;margin:32px auto;padding:0 20px 60px;}
+
+/* ── FORM CARD ── */
+.form-card{
+  background:var(--white);border-radius:20px;
+  box-shadow:var(--shadow-lg);overflow:hidden;
+}
+.form-section-header{
+  padding:24px 28px 0;
+  display:flex;align-items:flex-start;gap:14px;
+}
+.section-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,var(--paars),var(--cta));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;flex-shrink:0;
+}
+.section-title{font-size:1.15rem;font-weight:900;color:var(--paars);margin-bottom:3px;}
+.section-desc{font-size:.75rem;color:var(--grijs2);line-height:1.5;}
+.form-body{padding:22px 28px 28px;}
+
+/* ── FIELDS ── */
+.field{margin-bottom:18px;}
+.field-label{
+  font-size:.72rem;font-weight:800;color:var(--grijs1);
+  text-transform:uppercase;letter-spacing:.4px;
+  margin-bottom:7px;display:flex;align-items:center;gap:6px;
+}
+.req{color:var(--cta);font-size:.7rem;}
+.field-hint{font-size:.67rem;color:var(--grijs2);margin-bottom:7px;line-height:1.4;}
+
+input[type=text],select,textarea{
+  width:100%;padding:11px 14px;
+  border:1.5px solid #e0e0ea;border-radius:10px;
+  font-size:.88rem;color:var(--grijs1);
+  background:var(--white);
+  font-family:inherit;
+  transition:border-color .2s,box-shadow .2s;
+  appearance:none;-webkit-appearance:none;
+  outline:none;
+}
+input[type=text]:focus,select:focus,textarea:focus{
+  border-color:var(--paars);
+  box-shadow:0 0 0 3px rgba(99,13,128,.10);
+}
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23630d80' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+  padding-right:36px;cursor:pointer;
+}
+textarea{resize:vertical;min-height:90px;line-height:1.6;}
+
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+/* Impact selector */
+.impact-selector{display:flex;gap:8px;}
+.impact-btn{
+  flex:1;padding:10px 8px;border-radius:10px;
+  border:1.5px solid #e0e0ea;background:var(--white);
+  cursor:pointer;text-align:center;transition:all .2s;
+  font-family:inherit;
+}
+.impact-btn:hover{border-color:var(--paars);}
+.impact-btn.selected{background:var(--paars);border-color:var(--paars);}
+.impact-btn .impact-n{font-size:1.2rem;font-weight:900;color:var(--grijs2);display:block;}
+.impact-btn.selected .impact-n{color:var(--groen);}
+.impact-btn .impact-l{font-size:.6rem;color:var(--grijs2);font-weight:600;}
+.impact-btn.selected .impact-l{color:rgba(255,255,255,.8);}
+
+/* PMC fase selector */
+.fase-selector{display:flex;flex-direction:column;gap:8px;}
+.fase-opt{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:10px;
+  border:1.5px solid #e0e0ea;cursor:pointer;
+  transition:all .2s;background:var(--white);
+  font-family:inherit;text-align:left;width:100%;
+}
+.fase-opt:hover{border-color:var(--paars);background:#faf5ff;}
+.fase-opt.selected{border-color:var(--paars);background:#f5edf9;}
+.fase-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.fase-name{font-size:.82rem;font-weight:700;color:var(--grijs1);}
+.fase-desc{font-size:.65rem;color:var(--grijs2);margin-top:1px;}
+.fase-fin{
+  margin-left:auto;font-size:.62rem;font-weight:700;
+  padding:2px 8px;border-radius:8px;
+  background:rgba(99,13,128,.08);color:var(--paars);
+  flex-shrink:0;
+}
+
+/* ── CHECKLIST ── */
+.checklist{display:flex;flex-direction:column;gap:7px;}
+.check-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:9px 12px;border-radius:9px;
+  background:var(--grijs4);cursor:pointer;
+  transition:background .15s;
+}
+.check-item:hover{background:#ede0f5;}
+.check-item.checked{background:#f0e8f8;}
+.check-item input[type=checkbox]{
+  width:16px;height:16px;margin-top:1px;
+  accent-color:var(--paars);flex-shrink:0;cursor:pointer;
+}
+.check-item label{font-size:.78rem;color:var(--grijs1);cursor:pointer;line-height:1.4;}
+.check-item .check-fase{
+  font-size:.6rem;font-weight:800;color:var(--paars);
+  margin-right:4px;
+}
+
+/* ── NAVIGATION ── */
+.form-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 28px;
+  border-top:1px solid #f0f0f5;
+  background:var(--grijs4);
+}
+.btn{
+  padding:12px 24px;border-radius:10px;border:none;
+  font-size:.82rem;font-weight:700;cursor:pointer;
+  font-family:inherit;transition:all .2s;
+  display:flex;align-items:center;gap:7px;
+}
+.btn-primary{background:var(--paars);color:var(--groen);}
+.btn-primary:hover{background:#4a0960;transform:translateY(-1px);}
+.btn-secondary{background:var(--white);color:var(--grijs2);
+  border:1.5px solid #e0e0ea;}
+.btn-secondary:hover{border-color:var(--paars);color:var(--paars);}
+.btn-success{
+  background:linear-gradient(135deg,var(--paars),var(--cta));
+  color:var(--groen);font-size:.9rem;padding:14px 32px;
+}
+.btn-success:hover{opacity:.92;transform:translateY(-1px);}
+
+/* ── PREVIEW ── */
+.preview-grid{display:flex;flex-direction:column;gap:0;}
+.preview-section{padding:16px 0;border-bottom:1px solid #f5f0f8;}
+.preview-section:last-child{border-bottom:none;}
+.preview-section-title{
+  font-size:.65rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:.5px;color:var(--paars);margin-bottom:10px;
+}
+.preview-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.preview-field .pf-label{font-size:.65rem;color:var(--grijs2);font-weight:600;}
+.preview-field .pf-value{font-size:.82rem;color:var(--grijs1);font-weight:600;margin-top:2px;}
+.preview-field.wide{grid-column:1/-1;}
+.pf-fase-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:20px;font-size:.72rem;font-weight:700;
+  border:1.5px solid;
+}
+.preview-impact{display:flex;gap:3px;margin-top:3px;}
+.star{font-size:.9rem;}
+
+/* ── SUCCES SCREEN ── */
+.success-screen{
+  padding:48px 28px;text-align:center;
+  display:none;
+}
+.success-icon{font-size:3.5rem;margin-bottom:16px;}
+.success-title{font-size:1.4rem;font-weight:900;color:var(--paars);margin-bottom:8px;}
+.success-desc{font-size:.85rem;color:var(--grijs2);line-height:1.6;max-width:420px;margin:0 auto 24px;}
+.success-link{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--paars);color:var(--groen);
+  padding:13px 24px;border-radius:12px;text-decoration:none;
+  font-weight:700;font-size:.85rem;transition:all .2s;
+}
+.success-link:hover{background:#4a0960;}
+
+/* Step visibility */
+.step-page{display:none;}
+.step-page.active{display:block;}
+
+/* Validation */
+.field.error input,.field.error select,.field.error textarea{
+  border-color:#e03a2a;box-shadow:0 0 0 3px rgba(224,58,42,.10);
+}
+.error-msg{font-size:.68rem;color:#e03a2a;margin-top:5px;display:none;}
+.field.error .error-msg{display:block;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-left">
+    <div class="tbi-mark">TBI</div>
+    <div>
+      <div class="hdr-title">Nieuw AI Initiatief indienen</div>
+      <div class="hdr-sub">TBI AI Team · SparkOptimus ACI-strategie v2.0</div>
+    </div>
+  </div>
+  <a href="index.html" class="hdr-back">← Terug naar dashboard</a>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-steps" id="progress-steps">
+    <div class="step-item" onclick="goToStep(1)">
+      <div class="step-num active" id="sn1">1</div>
+      <div class="step-label active" id="sl1">Identificatie</div>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step-item" onclick="goToStep(2)">
+      <div class="step-num" id="sn2">2</div>
+      <div class="step-label" id="sl2">Doelstelling</div>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step-item" onclick="goToStep(3)">
+      <div class="step-num" id="sn3">3</div>
+      <div class="step-label" id="sl3">Benodigdheden</div>
+    </div>
+    <div class="step-line" id="line3"></div>
+    <div class="step-item" onclick="goToStep(4)">
+      <div class="step-num" id="sn4">4</div>
+      <div class="step-label" id="sl4">Succes & KPI</div>
+    </div>
+    <div class="step-line" id="line4"></div>
+    <div class="step-item">
+      <div class="step-num" id="sn5">✓</div>
+      <div class="step-label" id="sl5">Indienen</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+<div class="form-card">
+
+  <!-- ══ STAP 1: IDENTIFICATIE ══ -->
+  <div class="step-page active" id="page1">
+    <div class="form-section-header">
+      <div class="section-icon">🏢</div>
+      <div>
+        <div class="section-title">Identificatie</div>
+        <div class="section-desc">Van welk bedrijf is dit initiatief, en wie zijn de sleutelpersonen?</div>
+      </div>
+    </div>
+    <div class="form-body">
+      <div class="field-row">
+        <div class="field" id="f-bedrijf">
+          <div class="field-label">TBI Bedrijf <span class="req">*</span></div>
+          <select id="bedrijf">
+            <option value="">— Selecteer bedrijf —</option>
+            <option>Comfort Partners</option>
+            <option>Croonwolter&dros</option>
+            <option>Eekels Technology</option>
+            <option>ERA Contour</option>
+            <option>GeWOONhout</option>
+            <option>Giesbers InstallatieGroep</option>
+            <option>Hazenberg Bouw</option>
+            <option>HEVO</option>
+            <option>J.P. van Eesteren</option>
+            <option>Koopmans Bouwgroep</option>
+            <option>MDB</option>
+            <option>Mobilis</option>
+            <option>Nico de Bont</option>
+            <option>Synchroon</option>
+            <option>TBI Holdings</option>
+            <option>TBI SSC ICT</option>
+            <option>Voorbij Funderingstechniek</option>
+            <option>Voorbij Prefab</option>
+            <option>WTH Vloerverwarming</option>
+          </select>
+          <div class="error-msg">Selecteer een bedrijf</div>
+        </div>
+        <div class="field" id="f-sector">
+          <div class="field-label">Sector <span class="req">*</span></div>
+          <select id="sector">
+            <option value="">— Selecteer sector —</option>
+            <option>TECHNIEK</option>
+            <option>BOUW & ONTWIKKELING</option>
+            <option>INFRA</option>
+            <option>HOLDING / SSC ICT</option>
+          </select>
+          <div class="error-msg">Selecteer een sector</div>
+        </div>
+      </div>
+      <div class="field" id="f-naam">
+        <div class="field-label">Naam initiatief <span class="req">*</span></div>
+        <input type="text" id="naam" placeholder="bv. AI Werkvoorbereiding Woningbouw">
+        <div class="error-msg">Vul een naam in</div>
+      </div>
+      <div class="field-row">
+        <div class="field" id="f-ambassadeur">
+          <div class="field-label">Ambassadeur (Directielid) <span class="req">*</span></div>
+          <input type="text" id="ambassadeur" placeholder="Naam — Functie">
+          <div class="error-msg">Vul de ambassadeur in</div>
+        </div>
+        <div class="field" id="f-eigenaar">
+          <div class="field-label">Eigenaar initiatief <span class="req">*</span></div>
+          <input type="text" id="eigenaar" placeholder="Naam — Functie">
+          <div class="error-msg">Vul de eigenaar in</div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">Adoptieverantwoordelijke</div>
+        <input type="text" id="adoptie" placeholder="Naam — Functie (optioneel)">
+      </div>
+    </div>
+    <div class="form-nav">
+      <div></div>
+      <button class="btn btn-primary" onclick="next(1)">Volgende: Doelstelling →</button>
+    </div>
+  </div>
+
+  <!-- ══ STAP 2: DOELSTELLING ══ -->
+  <div class="step-page" id="page2">
+    <div class="form-section-header">
+      <div class="section-icon">🎯</div>
+      <div>
+        <div class="section-title">Doelstelling & Omschrijving</div>
+        <div class="section-desc">Wat wil je bereiken, en hoe sluit het aan bij de TBI AI-strategie?</div>
+      </div>
+    </div>
+    <div class="form-body">
+      <div class="field" id="f-doelstelling">
+        <div class="field-label">Doelstelling <span class="req">*</span></div>
+        <div class="field-hint">Wees concreet en meetbaar. Wat verandert er als dit initiatief slaagt?</div>
+        <textarea id="doelstelling" placeholder="bv. De calculatietijd reduceren van 3 dagen naar 4 uur door AI-ondersteuning bij het opstellen van bestekken." rows="3"></textarea>
+        <div class="error-msg">Vul de doelstelling in</div>
+      </div>
+      <div class="field" id="f-omschrijving">
+        <div class="field-label">Omschrijving (Situatie · Complicatie · Oplossing) <span class="req">*</span></div>
+        <textarea id="omschrijving" placeholder="Situatie: Momenteel wordt calculatie volledig handmatig uitgevoerd...&#10;&#10;Complicatie: Dit kost gemiddeld 3 dagen per project en leidt tot fouten...&#10;&#10;Beoogde oplossing: Een AI-copilot die automatisch..." rows="7"></textarea>
+        <div class="error-msg">Beschrijf het initiatief</div>
+      </div>
+      <div class="field-row">
+        <div class="field" id="f-domein">
+          <div class="field-label">Primair domein <span class="req">*</span></div>
+          <select id="domein">
+            <option value="">— Selecteer domein —</option>
+            <option>Werkvoorbereiding & Planning</option>
+            <option>Calculatie & Aanbesteding</option>
+            <option>Bouwproces & Uitvoering</option>
+            <option>Energietransitie & Duurzaamheid</option>
+            <option>Risico & Kwaliteitsbeheersing</option>
+            <option>Operations & Onderhoud</option>
+            <option>Documentbeheer & Contracten</option>
+            <option>Data & Rapportage</option>
+            <option>Strategie & Adoptie</option>
+            <option>Klant & Markt</option>
+            <option>Overig</option>
+          </select>
+          <div class="error-msg">Selecteer een domein</div>
+        </div>
+        <div class="field">
+          <div class="field-label">ACI-fase</div>
+          <select id="aci">
+            <option>Fase 1 — Assistent (individu)</option>
+            <option>Fase 2 — Digitale collega (team)</option>
+            <option>Fase 3 — Agent (autonoom)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-nav">
+      <button class="btn btn-secondary" onclick="prev(2)">← Terug</button>
+      <button class="btn btn-primary" onclick="next(2)">Volgende: Benodigdheden →</button>
+    </div>
+  </div>
+
+  <!-- ══ STAP 3: BENODIGDHEDEN ══ -->
+  <div class="step-page" id="page3">
+    <div class="form-section-header">
+      <div class="section-icon">🔧</div>
+      <div>
+        <div class="section-title">Benodigdheden & PMC Fase</div>
+        <div class="section-desc">Wat is er nodig, en in welke fase van het innovatieproces zit dit initiatief?</div>
+      </div>
+    </div>
+    <div class="form-body">
+      <div class="field-row">
+        <div class="field">
+          <div class="field-label">Organisatiedeel</div>
+          <input type="text" id="orgdeel" placeholder="bv. Werkvoorbereiding, Gehele organisatie">
+        </div>
+        <div class="field">
+          <div class="field-label">Processen</div>
+          <input type="text" id="processen" placeholder="bv. Calculatie, BIM-modellering">
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">Teamleden nodig</div>
+        <textarea id="teamleden" placeholder="Projectleider (intern):&#10;Domeinexpert:&#10;IT / data engineer (SSC ICT):&#10;Eindgebruikers:" rows="4"></textarea>
+      </div>
+      <div class="field">
+        <div class="field-label">Veranderingsbereidheid</div>
+        <select id="verandering">
+          <option>🟢 Hoog — team is enthousiast en klaar</option>
+          <option>🟡 Gemiddeld — enige begeleiding nodig</option>
+          <option>🔴 Laag — significante change management nodig</option>
+        </select>
+      </div>
+      <div class="field" id="f-fase">
+        <div class="field-label">PMC Startfase <span class="req">*</span></div>
+        <div class="field-hint">Paars = TBI Holding financiert · Groen = bedrijf eigen budget</div>
+        <div class="fase-selector">
+          <button type="button" class="fase-opt selected" onclick="selectFase(this,'Fase 1 — Idee','#630d80','Holding fonds')">
+            <div class="fase-dot" style="background:#630d80"></div>
+            <div><div class="fase-name">Fase 1 — Idee</div><div class="fase-desc">Verkenning, business case</div></div>
+            <div class="fase-fin">Holding fonds</div>
+          </button>
+          <button type="button" class="fase-opt" onclick="selectFase(this,'Fase 2 — Prototype','#7a3596','Holding fonds')">
+            <div class="fase-dot" style="background:#7a3596"></div>
+            <div><div class="fase-name">Fase 2 — Prototype</div><div class="fase-desc">Bouwen & valideren</div></div>
+            <div class="fase-fin">Holding fonds</div>
+          </button>
+          <button type="button" class="fase-opt" onclick="selectFase(this,'Fase 3 — Pilots','#1d7a6e','Co-financiering')">
+            <div class="fase-dot" style="background:#1d7a6e"></div>
+            <div><div class="fase-name">Fase 3 — Pilots</div><div class="fase-desc">Testen & verfijnen</div></div>
+            <div class="fase-fin">Co-financiering</div>
+          </button>
+          <button type="button" class="fase-opt" onclick="selectFase(this,'Fase 4 — Go-to-Market','#2a7a1a','Eigen budget')">
+            <div class="fase-dot" style="background:#2a7a1a"></div>
+            <div><div class="fase-name">Fase 4 — Go-to-Market</div><div class="fase-desc">Uitrollen & adopteren</div></div>
+            <div class="fase-fin">Eigen budget</div>
+          </button>
+          <button type="button" class="fase-opt" onclick="selectFase(this,'Fase 5 — Scale-Up','#3a9020','Volledig eigen')">
+            <div class="fase-dot" style="background:#3a9020"></div>
+            <div><div class="fase-name">Fase 5 — Scale-Up</div><div class="fase-desc">Volledig live & schaalbaar</div></div>
+            <div class="fase-fin">Volledig eigen</div>
+          </button>
+        </div>
+      </div>
+      <input type="hidden" id="fase-value" value="Fase 1 — Idee">
+
+      <div class="field" style="margin-top:4px">
+        <div class="field-label">Go/No-Go criteria — al voldaan?</div>
+        <div class="field-hint">Vink aan welke criteria je al kunt bevestigen.</div>
+        <div class="checklist">
+          <label class="check-item"><input type="checkbox" name="gngo" value="Idee is in potentie herhaalbaar / schaalbaar"><label><span class="check-fase">1→2</span> Idee is herhaalbaar / schaalbaar</label></label>
+          <label class="check-item"><input type="checkbox" name="gngo" value="Sponsor vanuit de business aanwezig"><label><span class="check-fase">1→2</span> Sponsor vanuit de business aanwezig</label></label>
+          <label class="check-item"><input type="checkbox" name="gngo" value="Interne toets uitgevoerd"><label><span class="check-fase">1→2</span> Interne toets uitgevoerd</label></label>
+          <label class="check-item"><input type="checkbox" name="gngo" value="MVP is technisch maakbaar en betaalbaar"><label><span class="check-fase">2→3</span> MVP is maakbaar en betaalbaar</label></label>
+          <label class="check-item"><input type="checkbox" name="gngo" value="Klantinzicht is bewezen"><label><span class="check-fase">2→3</span> Klantinzicht is bewezen</label></label>
+          <label class="check-item"><input type="checkbox" name="gngo" value="Team is strategisch divers en kan agile werken"><label><span class="check-fase">2→3</span> Team is strategisch divers en agile</label></label>
+          <label class="check-item"><input type="checkbox" name="gngo" value="Minimaal 2 succesvolle betaalde pilots"><label><span class="check-fase">3→4</span> Minimaal 2 betaalde pilots</label></label>
+          <label class="check-item"><input type="checkbox" name="gngo" value="Make-or-buy analyse uitgevoerd"><label><span class="check-fase">3→4</span> Make-or-buy analyse uitgevoerd</label></label>
+        </div>
+      </div>
+    </div>
+    <div class="form-nav">
+      <button class="btn btn-secondary" onclick="prev(3)">← Terug</button>
+      <button class="btn btn-primary" onclick="next(3)">Volgende: Succes & KPI →</button>
+    </div>
+  </div>
+
+  <!-- ══ STAP 4: SUCCES & KPI ══ -->
+  <div class="step-page" id="page4">
+    <div class="form-section-header">
+      <div class="section-icon">📊</div>
+      <div>
+        <div class="section-title">Succesdefinitie & KPI's</div>
+        <div class="section-desc">Wanneer is dit initiatief geslaagd, en hoe meet je dat?</div>
+      </div>
+    </div>
+    <div class="form-body">
+      <div class="field" id="f-succes">
+        <div class="field-label">Wanneer is het initiatief geslaagd? <span class="req">*</span></div>
+        <textarea id="succes" placeholder="Het initiatief is geslaagd wanneer:&#10;- 80% van de werkvoorbereiders de tool actief gebruikt&#10;- De gemiddelde voorbereidingstijd is gereduceerd van X naar Y uur&#10;- De foutmarge in bestellingen is gedaald met Z%" rows="4"></textarea>
+        <div class="error-msg">Beschrijf het gewenste eindresultaat</div>
+      </div>
+      <div class="field">
+        <div class="field-label">KPI & KPI-boom</div>
+        <textarea id="kpi" placeholder="🎯 Hoofd-KPI: Reductie calculatietijd met 70%&#10;   └ Sub-KPI 1: Adoptiegraad tool > 80%&#10;   └ Sub-KPI 2: Tijdsbesparing > 30%&#10;   └ Sub-KPI 3: Kwaliteitsscore > 95%" rows="5"></textarea>
+      </div>
+      <div class="field">
+        <div class="field-label">Verwachte impact (1–5)</div>
+        <div class="impact-selector" id="impact-selector">
+          <button type="button" class="impact-btn" onclick="selectImpact(1)"><span class="impact-n">1</span><span class="impact-l">Experimenteel</span></button>
+          <button type="button" class="impact-btn" onclick="selectImpact(2)"><span class="impact-n">2</span><span class="impact-l">Klein</span></button>
+          <button type="button" class="impact-btn selected" onclick="selectImpact(3)"><span class="impact-n">3</span><span class="impact-l">Gemiddeld</span></button>
+          <button type="button" class="impact-btn" onclick="selectImpact(4)"><span class="impact-n">4</span><span class="impact-l">Groot</span></button>
+          <button type="button" class="impact-btn" onclick="selectImpact(5)"><span class="impact-n">5</span><span class="impact-l">Transformatief</span></button>
+        </div>
+      </div>
+      <input type="hidden" id="impact-value" value="3">
+    </div>
+    <div class="form-nav">
+      <button class="btn btn-secondary" onclick="prev(4)">← Terug</button>
+      <button class="btn btn-primary" onclick="next(4)">Preview & Indienen →</button>
+    </div>
+  </div>
+
+  <!-- ══ STAP 5: PREVIEW & INDIENEN ══ -->
+  <div class="step-page" id="page5">
+    <div class="form-section-header">
+      <div class="section-icon">✅</div>
+      <div>
+        <div class="section-title">Preview & Indienen</div>
+        <div class="section-desc">Controleer je initiatief en dien het in via GitHub.</div>
+      </div>
+    </div>
+    <div class="form-body">
+      <div class="preview-grid" id="preview-content"></div>
+    </div>
+    <div class="form-nav">
+      <button class="btn btn-secondary" onclick="prev(5)">← Aanpassen</button>
+      <button class="btn btn-success" onclick="submit()">🚀 Indienen via GitHub</button>
+    </div>
+
+    <!-- Succes scherm -->
+    <div class="success-screen" id="success-screen">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Initiatief ingediend!</div>
+      <div class="success-desc">
+        Je initiatief staat nu in de TBI AI backlog. Het AI team neemt binnen
+        5 werkdagen contact op voor een intake gesprek.
+      </div>
+      <a href="index.html" class="success-link">← Terug naar dashboard</a>
+    </div>
+  </div>
+
+</div><!-- /.form-card -->
+</main>
+
+<script>
+let currentStep = 1;
+let selectedFase = 'Fase 1 — Idee';
+let selectedFaseColor = '#630d80';
+let selectedFaseFin = 'Holding fonds';
+let selectedImpact = 3;
+
+// ── NAVIGATION ──────────────────────────────────────────────
+function goToStep(n) {
+  if (n > currentStep) return; // can only go back freely
+  showStep(n);
+}
+
+function next(fromStep) {
+  if (!validate(fromStep)) return;
+  showStep(fromStep + 1);
+  if (fromStep + 1 === 5) buildPreview();
+}
+
+function prev(fromStep) {
+  showStep(fromStep - 1);
+}
+
+function showStep(n) {
+  document.getElementById('page' + currentStep).classList.remove('active');
+  currentStep = n;
+  document.getElementById('page' + n).classList.add('active');
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  for (let i = 1; i <= 5; i++) {
+    const num = document.getElementById('sn' + i);
+    const lbl = document.getElementById('sl' + i);
+    num.className = 'step-num' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
+    if (i < currentStep) num.textContent = '✓';
+    else num.textContent = i === 5 ? '✓' : i;
+    lbl.className = 'step-label' + (i === currentStep ? ' active' : i < currentStep ? ' done' : '');
+    if (i < 5) {
+      const line = document.getElementById('line' + i);
+      if (line) line.className = 'step-line' + (i < currentStep ? ' done' : '');
+    }
+  }
+}
+
+// ── VALIDATION ──────────────────────────────────────────────
+function validate(step) {
+  let ok = true;
+  if (step === 1) {
+    ok = check('bedrijf','f-bedrijf') & check('sector','f-sector') &
+         check('naam','f-naam') & check('ambassadeur','f-ambassadeur') &
+         check('eigenaar','f-eigenaar');
+  }
+  if (step === 2) {
+    ok = check('doelstelling','f-doelstelling') & check('omschrijving','f-omschrijving') &
+         check('domein','f-domein');
+  }
+  if (step === 4) {
+    ok = check('succes','f-succes');
+  }
+  return ok;
+}
+
+function check(fieldId, wrapId) {
+  const el = document.getElementById(fieldId);
+  const wrap = document.getElementById(wrapId);
+  if (!el || !wrap) return true;
+  if (!el.value.trim()) {
+    wrap.classList.add('error');
+    el.focus();
+    return false;
+  }
+  wrap.classList.remove('error');
+  return true;
+}
+
+// Clear error on input
+document.querySelectorAll('input,select,textarea').forEach(el => {
+  el.addEventListener('input', () => {
+    el.closest('.field')?.classList.remove('error');
+  });
+});
+
+// ── SELECTORS ───────────────────────────────────────────────
+function selectFase(btn, name, color, fin) {
+  document.querySelectorAll('.fase-opt').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedFase = name;
+  selectedFaseColor = color;
+  selectedFaseFin = fin;
+  document.getElementById('fase-value').value = name;
+}
+
+function selectImpact(n) {
+  selectedImpact = n;
+  document.getElementById('impact-value').value = n;
+  document.querySelectorAll('.impact-btn').forEach((btn, i) => {
+    btn.classList.toggle('selected', i + 1 === n);
+  });
+}
+
+// ── PREVIEW ─────────────────────────────────────────────────
+const impactLabels = ['','Experimenteel','Klein','Gemiddeld','Groot','Transformatief'];
+
+function buildPreview() {
+  const gonogo = [...document.querySelectorAll('input[name=gngo]:checked')].map(cb => cb.value);
+  const stars = Array.from({length:5},(_,i)=>`<span class="star" style="opacity:${i<selectedImpact?1:.2}">⭐</span>`).join('');
+
+  document.getElementById('preview-content').innerHTML = `
+    <div class="preview-section">
+      <div class="preview-section-title">Identificatie</div>
+      <div class="preview-fields">
+        <div class="preview-field"><div class="pf-label">Bedrijf</div><div class="pf-value">${v('bedrijf')}</div></div>
+        <div class="preview-field"><div class="pf-label">Sector</div><div class="pf-value">${v('sector')}</div></div>
+        <div class="preview-field wide"><div class="pf-label">Naam initiatief</div><div class="pf-value">${v('naam')}</div></div>
+        <div class="preview-field"><div class="pf-label">Ambassadeur</div><div class="pf-value">${v('ambassadeur')}</div></div>
+        <div class="preview-field"><div class="pf-label">Eigenaar</div><div class="pf-value">${v('eigenaar')}</div></div>
+      </div>
+    </div>
+    <div class="preview-section">
+      <div class="preview-section-title">Doelstelling</div>
+      <div class="preview-fields">
+        <div class="preview-field wide"><div class="pf-label">Doelstelling</div><div class="pf-value">${v('doelstelling')}</div></div>
+        <div class="preview-field"><div class="pf-label">Domein</div><div class="pf-value">${v('domein')}</div></div>
+        <div class="preview-field"><div class="pf-label">ACI-fase</div><div class="pf-value">${v('aci')}</div></div>
+      </div>
+    </div>
+    <div class="preview-section">
+      <div class="preview-section-title">PMC Fase & Financiering</div>
+      <div class="preview-fields">
+        <div class="preview-field"><div class="pf-label">Fase</div>
+          <div class="pf-value"><span class="pf-fase-badge" style="background:${selectedFaseColor}18;color:${selectedFaseColor};border-color:${selectedFaseColor}40">${selectedFase}</span></div>
+        </div>
+        <div class="preview-field"><div class="pf-label">Financiering</div><div class="pf-value">${selectedFaseFin}</div></div>
+      </div>
+    </div>
+    <div class="preview-section">
+      <div class="preview-section-title">Succesdefinitie & Impact</div>
+      <div class="preview-fields">
+        <div class="preview-field wide"><div class="pf-label">Wanneer geslaagd</div><div class="pf-value">${v('succes')}</div></div>
+        <div class="preview-field"><div class="pf-label">Impact</div><div class="pf-value"><div class="preview-impact">${stars}</div>${impactLabels[selectedImpact]}</div></div>
+        ${v('kpi') ? `<div class="preview-field wide"><div class="pf-label">KPI's</div><div class="pf-value" style="white-space:pre-line">${v('kpi')}</div></div>` : ''}
+      </div>
+    </div>
+    ${gonogo.length ? `<div class="preview-section">
+      <div class="preview-section-title">Go/No-Go criteria bevestigd</div>
+      <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+        ${gonogo.map(c=>`<div style="font-size:.78rem;color:var(--grijs1);display:flex;gap:7px"><span>✅</span><span>${c}</span></div>`).join('')}
+      </div>
+    </div>` : ''}
+  `;
+}
+
+function v(id) {
+  return (document.getElementById(id)?.value || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── SUBMIT ──────────────────────────────────────────────────
+function submit() {
+  const gonogo = [...document.querySelectorAll('input[name=gngo]:checked')].map(cb => `- [x] ${cb.value}`).join('\n');
+  const body = `## TBI AI Initiatiefkaart
+
+**Bedrijf:** ${v('bedrijf')}
+**Sector:** ${v('sector')}
+**Ambassadeur:** ${v('ambassadeur')}
+**Eigenaar:** ${v('eigenaar')}
+**Adoptieverantwoordelijke:** ${v('adoptie') || '—'}
+
+---
+
+### 🎯 Doelstelling
+${v('doelstelling')}
+
+**Domein:** ${v('domein')}
+**ACI-fase:** ${v('aci')}
+
+### 📋 Omschrijving
+${v('omschrijving')}
+
+---
+
+### 🔧 Benodigdheden
+**Organisatiedeel:** ${v('orgdeel') || '—'}
+**Processen:** ${v('processen') || '—'}
+**Teamleden:**
+${v('teamleden') || '—'}
+**Veranderingsbereidheid:** ${v('verandering')}
+
+### PMC Fase & Financiering
+**Fase:** ${selectedFase}
+**Financiering:** ${selectedFaseFin}
+
+${gonogo ? `### Go/No-Go criteria\n${gonogo}` : ''}
+
+---
+
+### ✅ Succesdefinitie
+${v('succes')}
+
+**KPI's:**
+${v('kpi') || '—'}
+
+**Verwachte impact:** ${selectedImpact}/5 — ${impactLabels[selectedImpact]}
+
+---
+*Ingediend via TBI AI Dashboard · SparkOptimus v2.0*`;
+
+  const title = `[INITIATIEF] ${v('naam')} — ${v('bedrijf')}`;
+  const url = `https://github.com/TBI-AI-team/tbi-ai-backlog/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&labels=status%3A+nieuw`;
+
+  window.open(url, '_blank');
+
+  // Toon succes scherm
+  setTimeout(() => {
+    document.getElementById('page5').querySelector('.form-body').style.display = 'none';
+    document.getElementById('page5').querySelector('.form-nav').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+  }, 800);
+}
+</script>
+</body>
+</html>
