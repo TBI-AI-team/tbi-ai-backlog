@@ -25,11 +25,11 @@ jobs:
 
             function extractField(body, label) {
               const regex = new RegExp(
-                '###\\s+' + label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\n+([\\s\\S]*?)(?=\\n###|\\n---|$)',
+                '###\\s+' + label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?=\\s|\\(|$|\\n)[^\\n]*\\n+([\\s\\S]*?)(?=\\n###|\\n---|$)',
                 'i'
               );
               const m = (body).match(regex);
-              return m ? m[1].trim().split('\n')[0].replace(/['"]/g,'') : '—';
+              return m ? m[1].trim().split('\n')[0] : '—';
             }
 
             const bedrijf     = extractField(body, 'TBI Bedrijf');
@@ -47,84 +47,93 @@ jobs:
             core.setOutput('doelstelling', doelstelling);
             core.setOutput('issue_url',    context.payload.issue.html_url);
             core.setOutput('issue_number', context.payload.issue.number.toString());
-            core.setOutput('issue_title',  context.payload.issue.title.replace(/['"]/g,''));
+            core.setOutput('issue_title',  context.payload.issue.title);
             core.setOutput('indiener',     context.payload.issue.user.login);
 
       - name: "📣 Post naar Teams via Power Automate"
+        env:
+          ISSUE_NUMBER: ${{ steps.parse.outputs.issue_number }}
+          ISSUE_TITLE:  ${{ steps.parse.outputs.issue_title }}
+          BEDRIJF:      ${{ steps.parse.outputs.bedrijf }}
+          AMBASSADEUR:  ${{ steps.parse.outputs.ambassadeur }}
+          DOMEIN:       ${{ steps.parse.outputs.domein }}
+          FASE:         ${{ steps.parse.outputs.fase }}
+          IMPACT:       ${{ steps.parse.outputs.impact }}
+          DOELSTELLING: ${{ steps.parse.outputs.doelstelling }}
+          INDIENER:     ${{ steps.parse.outputs.indiener }}
+          ISSUE_URL:    ${{ steps.parse.outputs.issue_url }}
+          TEAMS_WEBHOOK_URI: ${{ secrets.TEAMS_WEBHOOK_URI }}
         run: |
-          curl -s -X POST "${{ secrets.TEAMS_WEBHOOK_URI }}" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "type": "message",
-              "attachments": [{
-                "contentType": "application/vnd.microsoft.card.adaptive",
-                "content": {
+          payload=$(jq -n \
+            --arg issue_number "$ISSUE_NUMBER" \
+            --arg issue_title  "$ISSUE_TITLE" \
+            --arg bedrijf      "$BEDRIJF" \
+            --arg ambassadeur  "$AMBASSADEUR" \
+            --arg domein       "$DOMEIN" \
+            --arg fase         "$FASE" \
+            --arg impact       "$IMPACT" \
+            --arg doelstelling "$DOELSTELLING" \
+            --arg indiener     "$INDIENER" \
+            --arg issue_url    "$ISSUE_URL" \
+            '{
+              type: "message",
+              attachments: [{
+                contentType: "application/vnd.microsoft.card.adaptive",
+                content: {
                   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                  "type": "AdaptiveCard",
-                  "version": "1.2",
-                  "body": [
+                  type: "AdaptiveCard",
+                  version: "1.2",
+                  body: [
                     {
-                      "type": "Container",
-                      "style": "emphasis",
-                      "items": [
-                        {
-                          "type": "ColumnSet",
-                          "columns": [
-                            {
-                              "type": "Column",
-                              "width": "auto",
-                              "items": [{
-                                "type": "TextBlock",
-                                "text": "🤖",
-                                "size": "ExtraLarge"
-                              }]
-                            },
-                            {
-                              "type": "Column",
-                              "width": "stretch",
-                              "items": [
-                                {
-                                  "type": "TextBlock",
-                                  "text": "Nieuw TBI AI Initiatief #${{ steps.parse.outputs.issue_number }}",
-                                  "weight": "Bolder",
-                                  "size": "Medium",
-                                  "color": "Accent"
-                                },
-                                {
-                                  "type": "TextBlock",
-                                  "text": "${{ steps.parse.outputs.issue_title }}",
-                                  "wrap": true,
-                                  "spacing": "None"
-                                }
-                              ]
-                            }
-                          ]
-                        }
+                      type: "Container",
+                      style: "emphasis",
+                      items: [{
+                        type: "ColumnSet",
+                        columns: [
+                          {
+                            type: "Column",
+                            width: "auto",
+                            items: [{ type: "TextBlock", text: "🤖", size: "ExtraLarge" }]
+                          },
+                          {
+                            type: "Column",
+                            width: "stretch",
+                            items: [
+                              { type: "TextBlock", text: "Nieuw TBI AI Initiatief #\($issue_number)", weight: "Bolder", size: "Medium", color: "Accent" },
+                              { type: "TextBlock", text: $issue_title, wrap: true, spacing: "None" }
+                            ]
+                          }
+                        ]
+                      }]
+                    },
+                    {
+                      type: "FactSet",
+                      facts: [
+                        { title: "Bedrijf",        value: $bedrijf },
+                        { title: "Ambassadeur",    value: $ambassadeur },
+                        { title: "Domein",         value: $domein },
+                        { title: "PMC Fase",       value: $fase },
+                        { title: "Impact",         value: $impact },
+                        { title: "Ingediend door", value: $indiener }
                       ]
                     },
                     {
-                      "type": "FactSet",
-                      "facts": [
-                        { "title": "Bedrijf", "value": "${{ steps.parse.outputs.bedrijf }}" },
-                        { "title": "Ambassadeur", "value": "${{ steps.parse.outputs.ambassadeur }}" },
-                        { "title": "Domein", "value": "${{ steps.parse.outputs.domein }}" },
-                        { "title": "PMC Fase", "value": "${{ steps.parse.outputs.fase }}" },
-                        { "title": "Impact", "value": "${{ steps.parse.outputs.impact }}" },
-                        { "title": "Ingediend door", "value": "${{ steps.parse.outputs.indiener }}" }
-                      ]
-                    },
-                    {
-                      "type": "TextBlock",
-                      "text": "**Doelstelling:** ${{ steps.parse.outputs.doelstelling }}...",
-                      "wrap": true,
-                      "spacing": "Medium"
+                      type: "TextBlock",
+                      text: "**Doelstelling:** \($doelstelling)...",
+                      wrap: true,
+                      spacing: "Medium"
                     }
                   ],
-                  "actions": [{
-                    "type": "Action.OpenUrl",
-                    "title": "📋 Bekijk initiatief op GitHub",
-                    "url": "${{ steps.parse.outputs.issue_url }}"
+                  actions: [{
+                    type: "Action.OpenUrl",
+                    title: "📋 Bekijk initiatief op GitHub",
+                    url: $issue_url
                   }]
                 }
               }]
-            }'
+            }')
+
+          curl -sS -X POST \
+            -H "Content-Type: application/json" \
+            -d "$payload" \
+            "$TEAMS_WEBHOOK_URI"
