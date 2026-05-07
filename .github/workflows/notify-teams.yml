@@ -25,7 +25,7 @@ jobs:
 
             function extractField(body, label) {
               const regex = new RegExp(
-                '###\\s+' + label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?=\\s|\\(|$|\\n)[^\\n]*\\n+([\\s\\S]*?)(?=\\n###|\\n---|$)',
+                '(?:^|\\n)###\\s+' + label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?=\\s|\\(|$|\\n)[^\\n]*\\n+([\\s\\S]*?)(?=\\n###|\\n---|$)',
                 'i'
               );
               const m = (body).match(regex);
