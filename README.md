@@ -14,9 +14,9 @@ tbi-ai-backlog/
 │   ├── ISSUE_TEMPLATE/
 │   │   └── ai-initiatief.yml      ← Het formulier (vervangt de PPTX)
 │   └── workflows/
-│       ├── auto-label.yml          ← Auto-labeling & triage
+│       ├── issue-pipeline.yml      ← Auto-label + dashboard data + Pages deploy
 │       ├── notify-teams.yml        ← Teams notificaties
-│       └── update-dashboard.yml    ← Dashboard data genereren + deploy
+│       └── weekly-stale-check.yml  ← Wekelijkse inactiviteitscheck
 ├── dashboard/
 │   ├── index.html                  ← Live boardroom dashboard
 │   └── data.json                   ← Auto-gegenereerde projectdata (niet handmatig editen)
