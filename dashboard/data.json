@@ -11,10 +11,10 @@
       "impact": 3,
       "desc": "",
       "locatie": "",
-      "milestone": "",
+      "milestone": "Q2 2026",
       "url": "https://github.com/TBI-AI-team/tbi-ai-backlog/issues/5",
       "created_at": "2026-05-07T08:09:04Z",
-      "updated_at": "2026-05-07T08:09:15Z",
+      "updated_at": "2026-05-07T08:09:18Z",
       "labels": [
         "sector: OVERIG",
         "fase: Idee",
@@ -117,6 +117,6 @@
     "by_bedrijf": {
       "": 4
     },
-    "generated": "2026-05-07T08:09:16.668Z"
+    "generated": "2026-05-07T08:19:52.728Z"
   }
 }
