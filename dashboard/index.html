@@ -12,6 +12,7 @@
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="companies.js"></script>
 <style>
 :root {
   --paars:    #630d80;
@@ -768,91 +769,91 @@ const PROJECTS = [
 
   // ── TBI-BREED (beheerd door TBI AI expertteam, pin: Weena 505 Rotterdam) ──
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9237, lng:4.4725,
+  {bedrijf:'TBI SSC ICT',
    titel:'Kennisbank Q&A assistent', sub:'Alle ondernemingen — initiatief #1',
    status:'Prototype',
    domein:'Ondersteuning generieke functies', impact:5,
    ebit:'€0.8–1.2M/jr', fin:'Holding fonds',
    desc:'Medewerkers (monteurs, werkvoorbereiders) stellen via een gebruikersvriendelijke tool vragen aan de eigen kennisbank. Relevant voor 95% van werknemers, besparing 2u+/wk/FTE.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9238, lng:4.4727,
+  {bedrijf:'TBI SSC ICT',
    titel:'AI Document Generatie', sub:'Alle ondernemingen — initiatief #2',
    status:'Prototype',
    domein:'Project-/Contractadministratie', impact:5,
    ebit:'€0.6–1.0M/jr', fin:'Holding fonds',
    desc:'Gen AI assembleert documenten (tech dossiers, handleidingen, rapportages) door gegevens uit projectsystemen, ERP en historische data samen te brengen. Besparing ~1u/wk bij 60% van werknemers.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9236, lng:4.4723,
+  {bedrijf:'TBI SSC ICT',
    titel:'Pre-project Risicoanalyse', sub:'Bouw & Infra — initiatief #3',
    status:'Prototype',
    domein:'Risicobeheersing', impact:5,
    ebit:'>€400k faalkosten/jr', fin:'Holding fonds',
    desc:'Gen AI-gedreven risicoanalyse: documenten worden in de pre-projectfase gecheckt op vooraf gedefinieerde risicocriteria zodat potentiële faalkosten vroeg worden gesignaleerd.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9239, lng:4.4722,
+  {bedrijf:'TBI SSC ICT',
    titel:'Rapportage Generator', sub:'Alle ondernemingen — initiatief #4',
    status:'Idee',
    domein:'Project-/Contractadministratie', impact:3,
    ebit:'€0.2–0.4M/jr', fin:'Holding fonds',
    desc:'Automatisch genereren van week- en maandrapportages voor klanten en opdrachtgevers op basis van actuele projectdata, voortgang en kosten.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9235, lng:4.4726,
+  {bedrijf:'TBI SSC ICT',
    titel:'Predictive Maintenance (TBI-breed)', sub:'Techniek & Infra — initiatief #5',
    status:'Prototype',
    domein:'Voorspellend onderhoud', impact:4,
    ebit:'€0.4–0.8M/jr', fin:'Holding fonds',
    desc:'Voorspel onderhoud bij klanten door predictive maintenance op basis van sensor-, storings- en trenddata. Hogere klanttevredenheid door minder downtime en storingen.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9234, lng:4.4728,
+  {bedrijf:'TBI SSC ICT',
    titel:'Sales Intelligence', sub:'Alle ondernemingen — initiatief #6',
    status:'Idee',
    domein:'Tenders en aanbestedingen', impact:3,
    ebit:'€0.3–0.5M/jr', fin:'Holding fonds',
    desc:'Identificeer saleskansen op basis van openbare data (vergunningen, marktontwikkelingen, tenders). Hogere conversie door betere marktselectie en timing.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9240, lng:4.4720,
+  {bedrijf:'TBI SSC ICT',
    titel:'Spraak Shift Memo', sub:'Techniek veld — initiatief #7',
    status:'Idee',
    domein:'Realisatie, onderhoud & service', impact:3,
    ebit:'€0.2–0.3M/jr', fin:'Holding fonds',
    desc:'Medewerkers sluiten hun shift af met een spraakmemo. AI genereert automatisch een samenvatting, actiepunten en veiligheidsmeldingen.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9241, lng:4.4719,
+  {bedrijf:'TBI SSC ICT',
    titel:'AI Frontoffice Klantvragen', sub:'Alle ondernemingen — initiatief #8',
    status:'Idee',
    domein:'Klantervaring verbeteren', impact:4,
    ebit:'€0.3–0.6M/jr', fin:'Holding fonds',
    desc:'AI-frontoffice beantwoordt klantvragen (garantiecheck, materiaalspecs, storingen), filtert en adviseert, en zet complexe cases door naar medewerkers.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9242, lng:4.4721,
+  {bedrijf:'TBI SSC ICT',
    titel:'Tender & Contract Analyse', sub:'Bouw & Infra — initiatief #9',
    status:'Idee',
    domein:'Tenders en aanbestedingen', impact:4,
    ebit:'€0.4–0.7M/jr', fin:'Holding fonds',
    desc:'Automatisch filteren en analyseren van tenderdocumenten en contracten op risico\'s, tegenstrijdigheden en relevante clausules.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9243, lng:4.4718,
+  {bedrijf:'TBI SSC ICT',
    titel:'Werkplan Generator', sub:'Bouw & Infra — initiatief #10',
    status:'Idee',
    domein:'Planning', impact:5,
    ebit:'€0.5–0.9M/jr', fin:'Holding fonds',
    desc:'Genereer werkplannen op basis van projectdocumentatie, afspraken en tekeningen. Besparing ~2-4u per project; hogere risicobeheersing en minder misverstanden.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9233, lng:4.4729,
+  {bedrijf:'TBI SSC ICT',
    titel:'Planningsoptimalisatie', sub:'Alle ondernemingen — initiatief #11',
    status:'Idee',
    domein:'Planning', impact:4,
    ebit:'€0.3–0.5M/jr', fin:'Holding fonds',
    desc:'Genereer planningsvoorstellen voor werkzaamheden op basis van projectdocumentatie, capaciteit en beperkingen.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9232, lng:4.4730,
+  {bedrijf:'TBI SSC ICT',
    titel:'AI Personeelsplanning', sub:'Alle ondernemingen — initiatief #12',
    status:'Idee',
    domein:'Planning', impact:3,
    ebit:'€0.2–0.3M/jr', fin:'Holding fonds',
    desc:'Maak personeelsplanningen op basis van certificeringen, standaarden, inzetbeperkingen en projectvereisten.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9231, lng:4.4731,
+  {bedrijf:'TBI SSC ICT',
    titel:'CO₂ Impact Calculator', sub:'Alle ondernemingen — initiatief #13',
    status:'Idee',
    domein:'Duurzaamheid & CO₂', impact:4,
@@ -861,14 +862,14 @@ const PROJECTS = [
 
   // ── AI VALUE SCAN ROLLOUT ─────────────────────────────────────────────────
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9237, lng:4.4726,
+  {bedrijf:'TBI SSC ICT',
    titel:'AI Value Scan Rollout', sub:'SparkOptimus × TBI — 21 bedrijven',
    status:'Scale-Up',
    domein:'Strategie & Adoptie', impact:5,
    ebit:'Fundament €5.1–7.7M EBIT', fin:'Volledig bedrijf',
    desc:'AI Value Scans bij alle TBI-bedrijven (start Q4 2025 met 5). Resulteert in 130+ AI-initiatieven waarvan ~70% TBI-breed relevant. Fundeert de volledige AI-roadmap 2026–2028.'},
 
-  {bedrijf:'TBI SSC ICT', sector:'HOLDING', lat:51.9236, lng:4.4724,
+  {bedrijf:'TBI SSC ICT',
    titel:'ACI Framework — TBI AI Expertteam', sub:'Augmented Collective Intelligence',
    status:'Go-to-Market',
    domein:'Strategie & Adoptie', impact:5,
@@ -877,83 +878,95 @@ const PROJECTS = [
 
   // ── BESTAANDE LOPENDE INITIATIEVEN (per bedrijf) ─────────────────────────
 
-  {bedrijf:'Comfort Partners', sector:'TECHNIEK', lat:52.2989, lng:4.9553,
+  {bedrijf:'Comfort Partners',
    titel:'Willie Warmtepomp', sub:'AI chatbot voor monteurs',
    status:'Pilots',
    domein:'Voorspellend onderhoud', impact:4,
    ebit:'Hogere klanttevredenheid', fin:'Co-financiering',
    desc:'AI-chatbot geeft monteurs direct toegang tot correcte, specifieke documentatie voor installatie en onderhoud van warmtepompen. Erkend als sterk voorbeeld in AI-assessment.'},
 
-  {bedrijf:'Comfort Partners', sector:'TECHNIEK', lat:52.2990, lng:4.9555,
+  {bedrijf:'Comfort Partners',
    titel:'Voice & Chatbot Bewoners', sub:'24/7 bewonersassistent',
    status:'Go-to-Market',
    domein:'Klantervaring verbeteren', impact:3,
    ebit:'Vermindering servicedruk', fin:'Eigen budget',
    desc:'AI-assistent (via telefoon en chat) beantwoordt 24/7 bewonersvragen, helpt bij het maken en wijzigen van afspraken, en lost simpele storingsproblemen op.'},
 
-  {bedrijf:'J.P. van Eesteren', sector:'BOUW', lat:52.0268, lng:4.6820,
+  {bedrijf:'J.P. van Eesteren',
    titel:'Ortedo AI', sub:'Tender documentatie automatisering',
    status:'Go-to-Market',
    domein:'Tenders en aanbestedingen', impact:4,
    ebit:'Tijdsbesparing werkvoorbereiding', fin:'Eigen budget',
    desc:'AI-tool die tenderdocumentatie automatisch stempelt, een documentenlijst genereert en vergelijkt met die van adviseurs en opdrachtgever. Hoge Copilot adoptie als basis.'},
 
-  {bedrijf:'Mobilis', sector:'INFRA', lat:51.9532, lng:4.5568,
+  {bedrijf:'Mobilis',
    titel:'Contractscan', sub:'AI voor contractmanagers',
    status:'Pilots',
    domein:'Tenders en aanbestedingen', impact:4,
    ebit:'Risicoreductie contracten', fin:'Co-financiering',
    desc:'AI-chatbot voor contractmanagers om documenten te scannen, tegenstrijdigheden te vinden en vragen te beantwoorden. Klein starten, snel leren — aanpak als best practice benoemd.'},
 
-  {bedrijf:'Croonwolter&dros', sector:'TECHNIEK', lat:51.9532, lng:4.5563,
+  {bedrijf:'Croonwolter&dros',
    titel:'Projectbeheersing Tobias', sub:'Virtuele assistent projectmanagement',
    status:'Pilots',
    domein:'Risicobeheersing', impact:4,
    ebit:'Betere besluitvorming', fin:'Co-financiering',
    desc:'AI-gestuurde virtuele assistent helpt bij complexe projectbeheersing door inzicht te geven in keuzes, contracten en verplichtingen. Croonwolter&dros heeft eigen AI team.'},
 
-  {bedrijf:'Croonwolter&dros', sector:'TECHNIEK', lat:51.9534, lng:4.5565,
+  {bedrijf:'Croonwolter&dros',
    titel:'ArmaturenVisionTool', sub:'Computer vision calculatie',
    status:'Go-to-Market',
    domein:'Engineering en ontwerp', impact:4,
    ebit:'Meerdere dagen calculatiewerk bespaard', fin:'Eigen budget',
    desc:'AI-vision tool telt automatisch armaturen op bouwtekeningen. Bespaart meerdere dagen aan calculatiewerk voor de divisie Utiliteit. Bewezen in productie.'},
 
-  {bedrijf:'Croonwolter&dros', sector:'TECHNIEK', lat:51.9533, lng:4.5564,
+  {bedrijf:'Croonwolter&dros',
    titel:'Inkoopoptimalisatie', sub:'AI-pilot inkoop advisering',
    status:'Pilots',
    domein:'Tenders en aanbestedingen', impact:3,
    ebit:'35% betere leverancierskeuze', fin:'Co-financiering',
    desc:'AI-pilot die inkopers adviseert op basis van prijzen, voordelen en raamcontracten. Uit vooronderzoek bleek dat in 35% van gevallen niet de goedkoopste leverancier werd gekozen.'},
 
-  {bedrijf:'Voorbij Funderingstechniek', sector:'INFRA', lat:52.4251, lng:4.7741,
+  {bedrijf:'Voorbij Funderingstechniek',
    titel:'Betonverbruiksmodel', sub:'AI op basis van sonderingsdata',
    status:'Prototype',
    domein:'Engineering en ontwerp', impact:4,
    ebit:'Competitievere aanbestedingsprijzen', fin:'Co-financiering',
    desc:'AI-gestuurd betonverbruiksmodel voorspelt verbruik op basis van sonderingsdata, waardoor concurrerende prijzen kunnen worden aangeboden. Uitgevoerd door Croonwolter&dros AI team.'},
 
-  {bedrijf:'MDB', sector:'BOUW', lat:52.0210, lng:4.6152,
+  {bedrijf:'MDB',
    titel:'Vrachtwagenplanning', sub:'AI transport optimalisatie',
    status:'Prototype',
    domein:'Planning', impact:3,
    ebit:'Efficiëntere logistiek', fin:'Co-financiering',
    desc:'AI-model voorspelt maximale vrachtlading per wagen op basis van transportdata en ondersteunt planners bij het optimaliseren van ladingen met onregelmatige objectvormen.'},
 
-  {bedrijf:'ERA Contour', sector:'BOUW', lat:52.0419, lng:4.5052,
+  {bedrijf:'ERA Contour',
    titel:'AI Werkvoorbereiding ERA', sub:'Prioriteit uit Value Scan',
    status:'Prototype',
    domein:'Planning', impact:5,
    ebit:'Grootste EBIT potentieel bouw', fin:'Co-financiering',
    desc:'Uit de ERA Contour AI Value Scan als hoogst geprioriteerd initiatief: AI-ondersteuning bij werkvoorbereiding voor seriematige woningbouw. BIM-data als basis voor automatisering.'},
 
-  {bedrijf:'Koopmans Bouwgroep', sector:'BOUW', lat:52.2159, lng:6.8181,  // Marssteden 66, Enschede
+  {bedrijf:'Koopmans Bouwgroep',  // Marssteden 66, Enschede
    titel:'Digitaal Bouwen × AI', sub:'Business & SSC samenwerking',
    status:'Idee',
    domein:'Engineering en ontwerp', impact:4,
    ebit:'Nader te bepalen', fin:'Holding fonds',
    desc:'Koopmans werkt nauw samen tussen digitaal bouwen, business en SSC ICT. Erkend als sterk voorbeeld van business-IT samenwerking. Concrete AI-toepassing in inventarisatie.'},
 ];
+
+// Decorate PROJECTS met bedrijf-metadata (sector + coords) uit shared companies.js.
+// Bedrijven zonder companies.js entry behouden hun lege sector/lat/lng — null-guards
+// in render-paden vangen het op.
+PROJECTS.forEach(p => {
+  const c = (typeof TBI_COMPANIES !== 'undefined') && TBI_COMPANIES[p.bedrijf];
+  if (c) {
+    p.sector = c.sector;
+    p.lat = c.lat;
+    p.lng = c.lng;
+  }
+});
 
 // Group per bedrijf
 const BEDRIJF_MAP = {};
@@ -1423,6 +1436,7 @@ function renderMapMarkers() {
   const bedrijven = Object.values(byBedrijf);
 
   bedrijven.forEach(b => {
+    if (b.lat == null || b.lng == null) return;   // geen coords → geen marker
     const col   = SECTOR_C[b.sector] || '#630d80';
     const abbr  = (b.bedrijf || '?').split(/[\s&]+/).map(w => w[0]).join('').substring(0,2).toUpperCase();
     const badge = b.projecten.length > 1
