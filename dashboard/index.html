@@ -180,32 +180,6 @@ html,body{width:100%;height:100vh;overflow:hidden;
   white-space:nowrap;flex-shrink:0;border:1.5px solid;
 }
 
-/* Filter bar */
-.map-filters{
-  top:20px;left:20px;
-  display:flex;flex-direction:column;gap:8px;
-  z-index:1000!important;
-}
-.filter-card{
-  background:rgba(255,255,255,.98);border-radius:12px;
-  padding:10px 14px;
-  box-shadow:0 4px 20px rgba(99,13,128,.18),0 1px 4px rgba(0,0,0,.1);
-  min-width:180px;
-}
-.filter-title{font-size:.6rem;font-weight:800;text-transform:uppercase;
-  letter-spacing:.5px;color:var(--paars);margin-bottom:7px;}
-.filter-pills{display:flex;flex-wrap:wrap;gap:5px;}
-.fpill{
-  padding:4px 10px;border-radius:14px;font-size:.65rem;font-weight:700;
-  cursor:pointer;border:1.5px solid transparent;
-  background:var(--grijs4);color:var(--grijs2);
-  transition:all .2s;white-space:nowrap;user-select:none;
-}
-.fpill:hover{border-color:var(--paars);color:var(--paars);background:#f5edf9;}
-.fpill.on{background:var(--paars);color:var(--groen);border-color:var(--paars);}
-.filter-reset{font-size:.62rem;color:var(--paars);cursor:pointer;margin-top:6px;
-  text-decoration:underline;display:none;font-weight:600;}
-.filter-reset.visible{display:block;}
 .map-legend{
   position:absolute;bottom:20px;right:20px;z-index:1000;
   background:rgba(255,255,255,.98);border-radius:14px;
@@ -452,11 +426,181 @@ html,body{width:100%;height:100vh;overflow:hidden;
   transition:opacity .35s ease;
 }
 #detail-overlay.open{opacity:1;pointer-events:all;}
+
+/* ═══════════════════════════════════════════════════════════
+   GLOBALE FILTER — FAB, PANEEL, EMPTY STATE
+═══════════════════════════════════════════════════════════ */
+.filter-fab{
+  position:fixed;top:108px;right:22px;z-index:1500;
+  width:48px;height:48px;border-radius:50%;
+  background:var(--white);border:1.5px solid rgba(99,13,128,.18);
+  box-shadow:0 4px 18px rgba(99,13,128,.16),0 1px 4px rgba(0,0,0,.06);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--paars);font-family:inherit;
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.filter-fab:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(99,13,128,.22),0 2px 6px rgba(0,0,0,.08);}
+.filter-fab.active{
+  border-color:var(--paars);
+  box-shadow:0 0 0 3px rgba(99,13,128,.18),0 4px 18px rgba(99,13,128,.20);
+}
+.filter-fab svg{display:block;}
+.filter-fab-badge{
+  position:absolute;top:-4px;right:-4px;
+  min-width:20px;height:20px;padding:0 5px;
+  background:var(--cta);color:var(--white);
+  border:2px solid var(--white);border-radius:10px;
+  font-size:.65rem;font-weight:900;
+  display:none;align-items:center;justify-content:center;
+  font-variant-numeric:tabular-nums;
+}
+.filter-fab.active .filter-fab-badge{display:flex;}
+
+#filter-panel{
+  position:fixed;top:0;right:0;width:380px;max-width:92vw;height:100vh;
+  background:var(--white);
+  box-shadow:-8px 0 40px rgba(99,13,128,.15);
+  z-index:2100;
+  transform:translateX(380px);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+#filter-panel.open{transform:translateX(0);}
+#filter-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.25);
+  z-index:2099;opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
+}
+#filter-overlay.open{opacity:1;pointer-events:all;}
+.fp-header{
+  padding:20px 22px 14px;
+  border-bottom:1px solid #f0f0f5;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  flex-shrink:0;gap:12px;
+}
+.fp-title{font-size:1.05rem;font-weight:900;color:var(--paars);line-height:1.2;}
+.fp-sub{font-size:.66rem;color:var(--grijs2);font-weight:500;margin-top:3px;}
+.fp-close{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--grijs4);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:var(--grijs2);flex-shrink:0;
+  transition:background .2s;font-family:inherit;
+}
+.fp-close:hover{background:#e0e0e8;}
+.fp-body{flex:1;overflow-y:auto;padding:16px 22px 12px;scrollbar-width:thin;}
+.fp-body::-webkit-scrollbar{width:6px;}
+.fp-body::-webkit-scrollbar-thumb{background:#e0e0ea;border-radius:3px;}
+.fp-section{margin-bottom:18px;}
+.fp-section-title{
+  font-size:.6rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:.6px;color:var(--paars);margin-bottom:8px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+.fp-section-count{
+  font-size:.6rem;font-weight:700;color:var(--grijs2);
+  background:var(--grijs4);padding:2px 8px;border-radius:8px;
+  letter-spacing:.3px;
+}
+.fp-section-count.on{background:rgba(99,13,128,.10);color:var(--paars);}
+.fp-chips{display:flex;flex-wrap:wrap;gap:5px;}
+.fchip{
+  padding:5px 11px;border-radius:14px;font-size:.7rem;font-weight:700;
+  cursor:pointer;border:1.5px solid transparent;
+  background:var(--grijs4);color:var(--grijs2);
+  transition:all .2s;white-space:nowrap;user-select:none;
+  font-family:inherit;
+}
+.fchip:hover{border-color:var(--paars);color:var(--paars);background:#f5edf9;}
+.fchip.on{background:var(--paars);color:var(--groen);border-color:var(--paars);}
+.fp-footer{
+  padding:14px 22px;border-top:1px solid #f0f0f5;
+  display:flex;gap:10px;flex-shrink:0;
+  background:var(--grijs4);
+}
+.fp-btn{
+  flex:1;padding:11px 16px;border-radius:10px;border:none;
+  font-size:.78rem;font-weight:700;cursor:pointer;
+  font-family:inherit;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.fp-btn-clear{background:var(--white);color:var(--paars);border:1.5px solid rgba(99,13,128,.25);}
+.fp-btn-clear:hover{background:#f5edf9;border-color:var(--paars);}
+.fp-btn-clear:disabled{opacity:.4;cursor:not-allowed;}
+.fp-btn-close{background:var(--paars);color:var(--groen);}
+.fp-btn-close:hover{background:#4a0960;}
+
+.clear-filters-link{
+  display:none;align-items:center;gap:5px;
+  padding:6px 13px;border-radius:20px;
+  font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
+  color:var(--paars);background:rgba(99,13,128,.08);
+  cursor:pointer;border:1.5px solid rgba(99,13,128,.20);
+  transition:all .2s;user-select:none;font-family:inherit;
+  margin-left:6px;
+}
+.clear-filters-link.visible{display:inline-flex;}
+.clear-filters-link:hover{background:rgba(99,13,128,.15);border-color:var(--paars);}
+
+.empty-state{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.empty-state-card{
+  background:var(--white);border-radius:var(--radius);
+  padding:30px 36px;text-align:center;
+  box-shadow:var(--shadow-lg);
+  max-width:380px;pointer-events:all;
+  border:1px solid rgba(99,13,128,.10);
+}
+.empty-state-icon{font-size:2.4rem;margin-bottom:10px;}
+.empty-state-title{font-size:.95rem;font-weight:800;color:var(--grijs1);margin-bottom:6px;}
+.empty-state-sub{font-size:.74rem;color:var(--grijs2);margin-bottom:18px;line-height:1.5;}
+.empty-state-btn{
+  background:var(--paars);color:var(--groen);
+  padding:10px 20px;border-radius:10px;border:none;
+  font-size:.78rem;font-weight:700;cursor:pointer;
+  font-family:inherit;transition:background .2s;
+}
+.empty-state-btn:hover{background:#4a0960;}
+.empty-state.in-grid{position:relative;grid-column:1/-1;width:100%;min-height:60vh;background:var(--grijs4);border-radius:var(--radius);}
+
+/* Map empty-state krijgt hogere z + lichte sluier zodat de tegels niet doorklikbaar zijn */
+#view-kaart .empty-state{z-index:1100;background:rgba(255,255,255,.55);backdrop-filter:blur(2px);pointer-events:all;}
+
+/* Schuif map-stats onder de filter-FAB door zodat ze niet overlappen */
+#view-kaart .map-stats{top:76px;}
 </style>
 </head>
 <body>
 
 <!-- ═══ HEADER ═══════════════════════════════════════════════ -->
+
+<!-- Filter paneel + overlay -->
+<div id="filter-overlay" onclick="closeFilterPanel()"></div>
+<div id="filter-panel" role="dialog" aria-label="Filters">
+  <div class="fp-header">
+    <div>
+      <div class="fp-title">Filter initiatieven</div>
+      <div class="fp-sub" id="fp-sub">28 van 28 initiatieven</div>
+    </div>
+    <button class="fp-close" onclick="closeFilterPanel()" aria-label="Sluit filterpaneel">✕</button>
+  </div>
+  <div class="fp-body" id="fp-body"></div>
+  <div class="fp-footer">
+    <button class="fp-btn fp-btn-clear" id="fp-clear-btn" onclick="clearAllFilters()" disabled>Wis filters</button>
+    <button class="fp-btn fp-btn-close" onclick="closeFilterPanel()">Klaar</button>
+  </div>
+</div>
+
+<!-- Floating filter knop -->
+<button class="filter-fab" id="filter-fab" onclick="openFilterPanel()" aria-label="Filters openen">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M3 5h18l-7 9v6l-4 2v-8L3 5z"/>
+  </svg>
+  <span class="filter-fab-badge" id="filter-fab-badge">0</span>
+</button>
 
 <!-- Detail paneel -->
 <div id="detail-overlay" onclick="closeDetail()"></div>
@@ -501,6 +645,9 @@ html,body{width:100%;height:100vh;overflow:hidden;
         ＋ Nieuw initiatief
       </div>
     </a>
+    <button type="button" class="clear-filters-link" id="clear-filters-link" onclick="clearAllFilters()">
+      ✕ Wis filters
+    </button>
   </div>
 
   <div class="hdr-right">
@@ -516,38 +663,13 @@ html,body{width:100%;height:100vh;overflow:hidden;
   <div class="view active" id="view-kaart">
     <div id="map"></div>
 
-    <!-- Filters linksboven -->
-    <div class="map-overlay map-filters">
-      <div class="filter-card">
-        <div class="filter-title">Fase</div>
-        <div class="filter-pills" id="filter-fase">
-          <div class="fpill on" data-val="all" onclick="setFilter('fase','all',this)">Alle</div>
-          <div class="fpill" data-val="Idee" onclick="setFilter('fase','Idee',this)">Idee</div>
-          <div class="fpill" data-val="Prototype" onclick="setFilter('fase','Prototype',this)">Prototype</div>
-          <div class="fpill" data-val="Pilots" onclick="setFilter('fase','Pilots',this)">Pilots</div>
-          <div class="fpill" data-val="Go-to-Market" onclick="setFilter('fase','Go-to-Market',this)">Go-to-Market</div>
-          <div class="fpill" data-val="Scale-Up" onclick="setFilter('fase','Scale-Up',this)">Scale-Up</div>
-        </div>
-      </div>
-      <div class="filter-card">
-        <div class="filter-title">Sector</div>
-        <div class="filter-pills" id="filter-sector">
-          <div class="fpill on" data-val="all" onclick="setFilter('sector','all',this)">Alle</div>
-          <div class="fpill" data-val="TECHNIEK" onclick="setFilter('sector','TECHNIEK',this)">Techniek</div>
-          <div class="fpill" data-val="BOUW" onclick="setFilter('sector','BOUW',this)">Bouw</div>
-          <div class="fpill" data-val="INFRA" onclick="setFilter('sector','INFRA',this)">Infra</div>
-          <div class="fpill" data-val="HOLDING" onclick="setFilter('sector','HOLDING',this)">Holding</div>
-        </div>
-      </div>
-      <div class="filter-card">
-        <div class="filter-title">Impact</div>
-        <div class="filter-pills" id="filter-impact">
-          <div class="fpill on" data-val="0" onclick="setFilter('impact','0',this)">Alle</div>
-          <div class="fpill" data-val="5" onclick="setFilter('impact','5',this)">⭐⭐⭐⭐⭐ Transformatief</div>
-          <div class="fpill" data-val="4" onclick="setFilter('impact','4',this)">⭐⭐⭐⭐ Groot</div>
-          <div class="fpill" data-val="3" onclick="setFilter('impact','3',this)">⭐⭐⭐ Gemiddeld</div>
-        </div>
-        <div class="filter-reset" id="filter-reset-btn" onclick="resetFilters()">Reset alle filters</div>
+    <!-- Empty state overlay (alleen zichtbaar als filter alle initiatieven uitsluit) -->
+    <div class="empty-state" id="map-empty" style="display:none;">
+      <div class="empty-state-card">
+        <div class="empty-state-icon">🔍</div>
+        <div class="empty-state-title">Geen initiatieven matchen deze filters</div>
+        <div class="empty-state-sub">Pas je filters aan of wis ze om alle initiatieven weer te zien.</div>
+        <button class="empty-state-btn" onclick="clearAllFilters()">Wis filters</button>
       </div>
     </div>
 
@@ -594,6 +716,19 @@ html,body{width:100%;height:100vh;overflow:hidden;
 <div class="progress-wrap"><div class="progress-fill" id="prog"></div></div>
 
 <script>
+// ─────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // ─────────────────────────────────────────────────────────────
 // DATA
 // ─────────────────────────────────────────────────────────────
@@ -877,10 +1012,9 @@ function openDetail(project) {
   document.getElementById('dp-sub').textContent   = project.sub || '';
 
   // Body opbouwen
-  const stars   = '⭐'.repeat(project.impact || 3);
   const gonogo  = project.gonogo || [];
   const gonogoHTML = gonogo.length
-    ? gonogo.map(c => `<div class="dp-crit"><span class="dp-crit-icon">✅</span><span>${c}</span></div>`).join('')
+    ? gonogo.map(c => `<div class="dp-crit"><span class="dp-crit-icon">✅</span><span>${escapeHtml(c)}</span></div>`).join('')
     : '<div class="dp-crit"><span class="dp-crit-icon">📋</span><span>Nog geen criteria ingevuld — dien het initiatiefformulier in op GitHub</span></div>';
 
   document.getElementById('dp-body').innerHTML = `
@@ -889,15 +1023,15 @@ function openDetail(project) {
       <div class="dp-section-title">Identificatie</div>
       <div class="dp-field">
         <div class="dp-field-label">Bedrijf</div>
-        <div class="dp-field-value">${project.bedrijf}</div>
+        <div class="dp-field-value">${escapeHtml(project.bedrijf)}</div>
       </div>
       <div class="dp-field">
         <div class="dp-field-label">Ambassadeur</div>
-        <div class="dp-field-value">${project.ambassadeur || '—'}</div>
+        <div class="dp-field-value">${escapeHtml(project.ambassadeur || '—')}</div>
       </div>
       <div class="dp-field">
         <div class="dp-field-label">Eigenaar initiatief</div>
-        <div class="dp-field-value">${project.eigenaar || '—'}</div>
+        <div class="dp-field-value">${escapeHtml(project.eigenaar || '—')}</div>
       </div>
     </div>
 
@@ -905,11 +1039,11 @@ function openDetail(project) {
       <div class="dp-section-title">Doelstelling & Omschrijving</div>
       <div class="dp-field">
         <div class="dp-field-label">Beschrijving</div>
-        <div class="dp-field-value">${project.desc}</div>
+        <div class="dp-field-value">${escapeHtml(project.desc)}</div>
       </div>
       ${project.doelstelling ? `<div class="dp-field">
         <div class="dp-field-label">Doelstelling</div>
-        <div class="dp-field-value">${project.doelstelling}</div>
+        <div class="dp-field-value">${escapeHtml(project.doelstelling)}</div>
       </div>` : ''}
     </div>
 
@@ -918,12 +1052,12 @@ function openDetail(project) {
       <div class="dp-field">
         <div class="dp-field-label">Fase</div>
         <div class="dp-fase-badge" style="background:${pmc.bg};border:1.5px solid ${pmc.border};color:${pmc.text}">
-          ${project.status} — ${pmc.fin}
+          ${escapeHtml(project.status || '')} — ${escapeHtml(pmc.fin)}
         </div>
       </div>
       <div class="dp-field">
         <div class="dp-field-label">Domein</div>
-        <div class="dp-field-value">${project.domein}</div>
+        <div class="dp-field-value">${escapeHtml(project.domein)}</div>
       </div>
       <div class="dp-field">
         <div class="dp-field-label">Verwachte impact</div>
@@ -931,7 +1065,7 @@ function openDetail(project) {
       </div>
       ${project.ebit ? `<div class="dp-field">
         <div class="dp-field-label">EBIT potentieel</div>
-        <div class="dp-field-value" style="color:#1e8c3a;font-weight:700">${project.ebit}</div>
+        <div class="dp-field-value" style="color:#1e8c3a;font-weight:700">${escapeHtml(project.ebit)}</div>
       </div>` : ''}
     </div>
 
@@ -943,14 +1077,14 @@ function openDetail(project) {
     ${project.kpi ? `<div class="dp-section">
       <div class="dp-section-title">KPI's</div>
       <div class="dp-field">
-        <div class="dp-field-value">${project.kpi}</div>
+        <div class="dp-field-value">${escapeHtml(project.kpi)}</div>
       </div>
     </div>` : ''}
 
     ${project.succes ? `<div class="dp-section">
       <div class="dp-section-title">Succesdefinitie</div>
       <div class="dp-field">
-        <div class="dp-field-value">${project.succes}</div>
+        <div class="dp-field-value">${escapeHtml(project.succes)}</div>
       </div>
     </div>` : ''}
   `;
@@ -1013,47 +1147,221 @@ pills.forEach((p,i) => p.addEventListener('click', ()=>{
 }));
 
 // ─────────────────────────────────────────────────────────────
+// GLOBALE FILTER — single source of truth voor alle views
+// Filterlogica: binnen één dimensie OR, tussen dimensies AND.
+// ─────────────────────────────────────────────────────────────
+const FILTER_DIMS = [
+  { key: 'bedrijf', label: 'Bedrijf' },
+  { key: 'status',  label: 'Fase'    },
+  { key: 'sector',  label: 'Sector'  },
+  { key: 'domein',  label: 'Domein'  },
+  { key: 'impact',  label: 'Impact'  },
+];
+const filterState = {
+  bedrijf: new Set(),
+  status:  new Set(),
+  sector:  new Set(),
+  domein:  new Set(),
+  impact:  new Set(),
+};
+
+function getFilterOptions(key) {
+  if (key === 'status') {
+    const present = new Set(PROJECTS.map(p => p.status).filter(Boolean));
+    return STAGES.filter(s => present.has(s));
+  }
+  if (key === 'impact') {
+    return [...new Set(PROJECTS.map(p => p.impact).filter(v => v != null))].sort((a, b) => b - a);
+  }
+  return [...new Set(PROJECTS.map(p => p[key]).filter(Boolean))].sort();
+}
+
+function getFilteredProjects() {
+  return PROJECTS.filter(p =>
+    FILTER_DIMS.every(({ key }) => {
+      const set = filterState[key];
+      if (set.size === 0) return true;
+      const val = p[key];
+      if (val == null || val === '') return false;
+      return set.has(val);
+    })
+  );
+}
+
+function activeDimensionCount() {
+  return FILTER_DIMS.reduce((n, { key }) => n + (filterState[key].size > 0 ? 1 : 0), 0);
+}
+
+function isAnyFilterActive() {
+  return activeDimensionCount() > 0;
+}
+
+function emptyStateHTML() {
+  return `<div class="empty-state in-grid">
+    <div class="empty-state-card">
+      <div class="empty-state-icon">🔍</div>
+      <div class="empty-state-title">Geen initiatieven matchen deze filters</div>
+      <div class="empty-state-sub">Pas je filters aan of wis ze om alle initiatieven weer te zien.</div>
+      <button class="empty-state-btn" onclick="clearAllFilters()">Wis filters</button>
+    </div>
+  </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// FILTER PANEEL — render + interactie
+// ─────────────────────────────────────────────────────────────
+function renderFilterPanel() {
+  const body = document.getElementById('fp-body');
+  body.innerHTML = FILTER_DIMS.map(({ key, label }) => {
+    const opts  = getFilterOptions(key);
+    const set   = filterState[key];
+    const onCnt = set.size;
+    const chips = opts.map(v => {
+      const valStr  = String(v);
+      const display = key === 'impact' ? '⭐'.repeat(v) + ' (' + v + ')' : valStr;
+      const on      = set.has(v);
+      return `<button type="button" class="fchip${on ? ' on' : ''}" data-dim="${escapeHtml(key)}" data-val="${escapeHtml(valStr)}">${escapeHtml(display)}</button>`;
+    }).join('');
+    return `<div class="fp-section" data-dim="${escapeHtml(key)}">
+      <div class="fp-section-title">
+        <span>${escapeHtml(label)}</span>
+        <span class="fp-section-count${onCnt ? ' on' : ''}">${onCnt} / ${opts.length}</span>
+      </div>
+      <div class="fp-chips">${chips}</div>
+    </div>`;
+  }).join('');
+
+  body.querySelectorAll('.fchip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const dim     = btn.dataset.dim;
+      const valStr  = btn.dataset.val;
+      const realVal = dim === 'impact' ? parseInt(valStr) : valStr;
+      const set     = filterState[dim];
+      if (set.has(realVal)) set.delete(realVal); else set.add(realVal);
+      btn.classList.toggle('on');
+      onFilterChanged();
+    });
+  });
+}
+
+function onFilterChanged() {
+  // Update sectie-tellers in het paneel (geen volledige rebuild — chips behouden focus)
+  document.querySelectorAll('.fp-section').forEach(sec => {
+    const dim    = sec.dataset.dim;
+    const opts   = getFilterOptions(dim);
+    const count  = filterState[dim].size;
+    const titleC = sec.querySelector('.fp-section-count');
+    if (titleC) {
+      titleC.textContent = `${count} / ${opts.length}`;
+      titleC.classList.toggle('on', count > 0);
+    }
+  });
+  applyFiltersToAllViews();
+  pauseRotationFor(MANUAL_PAUSE);
+}
+
+function applyFiltersToAllViews() {
+  renderMapMarkers();
+  renderPipeline();
+  renderBacklog();
+  renderKPI();
+  updateFilterAffordances();
+}
+
+function updateFilterAffordances() {
+  const fab        = document.getElementById('filter-fab');
+  const badge      = document.getElementById('filter-fab-badge');
+  const headerLink = document.getElementById('clear-filters-link');
+  const fpSub      = document.getElementById('fp-sub');
+  const clearBtn   = document.getElementById('fp-clear-btn');
+  const dimCount   = activeDimensionCount();
+  const filtered   = getFilteredProjects().length;
+  const total      = PROJECTS.length;
+  if (dimCount > 0) {
+    fab.classList.add('active');
+    badge.textContent = dimCount;
+    headerLink.classList.add('visible');
+    if (fpSub)    fpSub.textContent = `${filtered} van ${total} initiatieven`;
+    if (clearBtn) clearBtn.disabled = false;
+  } else {
+    fab.classList.remove('active');
+    headerLink.classList.remove('visible');
+    if (fpSub)    fpSub.textContent = `${total} van ${total} initiatieven`;
+    if (clearBtn) clearBtn.disabled = true;
+  }
+}
+
+function openFilterPanel() {
+  renderFilterPanel();
+  document.getElementById('filter-panel').classList.add('open');
+  document.getElementById('filter-overlay').classList.add('open');
+  pauseRotationFor(MANUAL_PAUSE);
+}
+
+function closeFilterPanel() {
+  document.getElementById('filter-panel').classList.remove('open');
+  document.getElementById('filter-overlay').classList.remove('open');
+}
+
+function clearAllFilters() {
+  FILTER_DIMS.forEach(({ key }) => filterState[key].clear());
+  document.querySelectorAll('.fchip.on').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.fp-section').forEach(sec => {
+    const dim    = sec.dataset.dim;
+    const opts   = getFilterOptions(dim);
+    const titleC = sec.querySelector('.fp-section-count');
+    if (titleC) {
+      titleC.textContent = `0 / ${opts.length}`;
+      titleC.classList.remove('on');
+    }
+  });
+  applyFiltersToAllViews();
+  pauseRotationFor(MANUAL_PAUSE);
+}
+
+// Esc — voorrang: detail-paneel → filter-paneel → wis filters
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  const detailPanel = document.getElementById('detail-panel');
+  const filterPanel = document.getElementById('filter-panel');
+  if (detailPanel && detailPanel.classList.contains('open')) {
+    closeDetail();
+    return;
+  }
+  if (filterPanel && filterPanel.classList.contains('open')) {
+    closeFilterPanel();
+    return;
+  }
+  if (isAnyFilterActive()) clearAllFilters();
+});
+
+// ─────────────────────────────────────────────────────────────
+// ROTATIE — pauze na handmatige interactie
+// ─────────────────────────────────────────────────────────────
+function pauseRotationFor(ms) {
+  if (rotTimer) clearTimeout(rotTimer);
+  if (progRAF)  cancelAnimationFrame(progRAF);
+  prog.style.transition = 'none';
+  prog.style.width = '0%';
+  progStart = performance.now();
+  const tickDur = ms;
+  (function tick(){
+    const pct = Math.min((performance.now() - progStart) / tickDur * 100, 100);
+    prog.style.width = pct + '%';
+    if (pct < 100) progRAF = requestAnimationFrame(tick);
+  })();
+  rotTimer = setTimeout(() => goTo(cur + 1), ms);
+}
+
+// ─────────────────────────────────────────────────────────────
 // MAP
 // ─────────────────────────────────────────────────────────────
-// ─────────────────────────────────────────────────────────────
-// KAART FILTERS
-// ─────────────────────────────────────────────────────────────
-const mapFilters = { fase: 'all', sector: 'all', impact: '0' };
-let leafletMarkerRefs = []; // filled in initMap
-
-function setFilter(type, val, el) {
-  mapFilters[type] = val;
-  // Update pill UI
-  el.closest('.filter-pills').querySelectorAll('.fpill').forEach(p => p.classList.remove('on'));
-  el.classList.add('on');
-  // Show/hide reset button
-  const hasFilter = mapFilters.fase!=='all' || mapFilters.sector!=='all' || mapFilters.impact!=='0';
-  document.getElementById('filter-reset-btn').classList.toggle('visible', hasFilter);
-  applyMapFilters();
-}
-
-function resetFilters() {
-  mapFilters.fase = 'all'; mapFilters.sector = 'all'; mapFilters.impact = '0';
-  document.querySelectorAll('.filter-pills .fpill').forEach(p => {
-    p.classList.remove('on');
-    if (p.dataset.val === 'all' || p.dataset.val === '0') p.classList.add('on');
-  });
-  document.getElementById('filter-reset-btn').classList.remove('visible');
-  applyMapFilters();
-}
-
-function applyMapFilters() {
-  leafletMarkerRefs.forEach(({ marker, bedrijf: b }) => {
-    const matchSector = mapFilters.sector === 'all' || b.sector === mapFilters.sector;
-    const matchFase   = mapFilters.fase   === 'all' || b.projecten.some(p => p.status === mapFilters.fase);
-    const minImpact   = parseInt(mapFilters.impact) || 0;
-    const matchImpact = minImpact === 0 || b.projecten.some(p => p.impact >= minImpact);
-    const show = matchSector && matchFase && matchImpact;
-    if (show) marker.addTo(_leafletMap);
-    else { marker.closePopup(); _leafletMap.removeLayer(marker); }
-  });
-}
-let _leafletMap = null;
+let _leafletMap     = null;
+let _markerLayer    = null;
+let _visibleMarkers = [];
+let _cycleTimer     = null;
+let _cycleStart     = null;
+let _cycleIdx       = 0;
 
 function initMap(){
   const map = L.map('map', {
@@ -1073,26 +1381,56 @@ function initMap(){
 
   map.setView([52.35, 5.35], 7);
 
-  // Stats overlay
-  const totalP = PROJECTS.length;
-  const active = PROJECTS.filter(p=>['Pilots','Go-to-Market','Scale-Up'].includes(p.status)).length;
-  document.getElementById('map-stats').innerHTML = `
-    <div class="map-stat"><div class="map-stat-n">${BEDRIJVEN.length}</div><div class="map-stat-l">Bedrijven</div></div>
-    <div class="map-stat"><div class="map-stat-n">${totalP}</div><div class="map-stat-l">Projecten</div></div>
-    <div class="map-stat"><div class="map-stat-n">${active}</div><div class="map-stat-l">Actief</div></div>`;
-
   _leafletMap = map;
-  const leafletMarkers = [];
 
-  BEDRIJVEN.forEach(b => {
-    const col  = SECTOR_C[b.sector];
-    const abbr = b.bedrijf.split(/[\s&]+/).map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  renderMapMarkers();
+
+  setTimeout(() => map.invalidateSize(), 200);
+}
+
+// renderMapMarkers — herbouwt alle markers o.b.v. getFilteredProjects().
+// Cycle/popup-gedrag identiek aan oude initMap (800ms start, 12s interval,
+// 1400ms popup-na-pan, zelfde popup opties).
+function renderMapMarkers() {
+  if (!_leafletMap) return;
+
+  if (_markerLayer)    { _leafletMap.removeLayer(_markerLayer); }
+  if (_cycleTimer)     { clearInterval(_cycleTimer); _cycleTimer = null; }
+  if (_cycleStart)     { clearTimeout(_cycleStart); _cycleStart = null; }
+  _leafletMap.closePopup();
+  _markerLayer    = L.layerGroup().addTo(_leafletMap);
+  _visibleMarkers = [];
+  _cycleIdx       = 0;
+
+  const filtered = getFilteredProjects();
+  const emptyEl  = document.getElementById('map-empty');
+
+  if (filtered.length === 0) {
+    if (emptyEl) emptyEl.style.display = 'flex';
+    updateMapStats(filtered);
+    return;
+  }
+  if (emptyEl) emptyEl.style.display = 'none';
+
+  // Groepeer per bedrijf (lat/lng komt van eerste project per bedrijf)
+  const byBedrijf = {};
+  filtered.forEach(p => {
+    if (!byBedrijf[p.bedrijf]) {
+      byBedrijf[p.bedrijf] = { bedrijf: p.bedrijf, sector: p.sector, lat: p.lat, lng: p.lng, projecten: [] };
+    }
+    byBedrijf[p.bedrijf].projecten.push(p);
+  });
+  const bedrijven = Object.values(byBedrijf);
+
+  bedrijven.forEach(b => {
+    const col   = SECTOR_C[b.sector] || '#630d80';
+    const abbr  = (b.bedrijf || '?').split(/[\s&]+/).map(w => w[0]).join('').substring(0,2).toUpperCase();
     const badge = b.projecten.length > 1
       ? `<div class="mk-badge">${b.projecten.length}</div>` : '';
 
     const icon = L.divIcon({
       html: `<div style="position:relative">
-        <div class="mk-pin" style="background:${col}">${abbr}</div>
+        <div class="mk-pin" style="background:${col}">${escapeHtml(abbr)}</div>
         ${badge}
       </div>`,
       className: '',
@@ -1101,18 +1439,17 @@ function initMap(){
       popupAnchor: [0, -26],
     });
 
-    // Build popup
-    const projRows = b.projecten.map((p,pi) => {
-      const pmc = safePMC(p.status);
-      const idx = PROJECTS.indexOf(p);
+    const projRows = b.projecten.map(p => {
+      const pmc     = safePMC(p.status);
+      const idx     = PROJECTS.indexOf(p);
       const safeIdx = idx >= 0 ? idx : 0;
       return '<div class="pop-proj" onclick="openDetail(PROJECTS[' + safeIdx + '])">' +
         '<div class="pop-dot" style="background:' + pmc.dot + '"></div>' +
         '<div class="pop-proj-info">' +
-          '<div class="pop-proj-titel">' + p.titel + '</div>' +
-          '<div class="pop-proj-sub">' + p.sub + '</div>' +
+          '<div class="pop-proj-titel">' + escapeHtml(p.titel) + '</div>' +
+          '<div class="pop-proj-sub">' + escapeHtml(p.sub || '') + '</div>' +
         '</div>' +
-        '<div class="pop-proj-fase" style="background:' + pmc.bg + ';color:' + pmc.text + ';border:1.5px solid ' + pmc.border + '">' + p.status + '</div>' +
+        '<div class="pop-proj-fase" style="background:' + pmc.bg + ';color:' + pmc.text + ';border:1.5px solid ' + pmc.border + '">' + escapeHtml(p.status || '') + '</div>' +
       '</div>';
     }).join('');
 
@@ -1126,103 +1463,140 @@ function initMap(){
       closeOnClick: true,
     }).setContent(`
       <div class="pop-header">
-        <div class="pop-sector">${b.sector}</div>
-        <div class="pop-bedrijf">${b.bedrijf}</div>
+        <div class="pop-sector">${escapeHtml(b.sector || '')}</div>
+        <div class="pop-bedrijf">${escapeHtml(b.bedrijf || '')}</div>
       </div>
       <div class="pop-projects">${projRows}</div>
     `);
 
-    const marker = L.marker([b.lat, b.lng], { icon }).bindPopup(popup).addTo(map);
-    leafletMarkers.push({ marker, bedrijf: b });
-    leafletMarkerRefs.push({ marker, bedrijf: b });
+    const marker = L.marker([b.lat, b.lng], { icon }).bindPopup(popup);
+    _markerLayer.addLayer(marker);
+    _visibleMarkers.push({ marker, bedrijf: b });
   });
 
-  // Auto-cycle door locaties zoals Volevo
-  let cycleIdx = 0;
-  function cycleNext() {
-    if (!leafletMarkers.length) return;
-    const { marker } = leafletMarkers[cycleIdx % leafletMarkers.length];
-    map.closePopup();
-    map.setView(marker.getLatLng(), 11, { animate: true, duration: 1.2 });
-    setTimeout(() => { map.closePopup(); marker.openPopup(); }, 1400);
-    cycleIdx++;
+  updateMapStats(filtered);
+
+  // Start cycle (zelfde timing als origineel)
+  if (_visibleMarkers.length > 0) {
+    _cycleStart = setTimeout(() => {
+      cycleNext();
+      if (_visibleMarkers.length > 1) {
+        _cycleTimer = setInterval(cycleNext, 12000);
+      }
+    }, 800);
   }
+}
 
-  // Start na 0.8 seconden, dan elke 8 seconden
-  setTimeout(() => {
-    cycleNext();
-    setInterval(cycleNext, 12000);
-  }, 800);
+function cycleNext() {
+  if (!_leafletMap || !_visibleMarkers.length) return;
+  const { marker } = _visibleMarkers[_cycleIdx % _visibleMarkers.length];
+  _leafletMap.closePopup();
+  _leafletMap.setView(marker.getLatLng(), 11, { animate: true, duration: 1.2 });
+  setTimeout(() => { _leafletMap.closePopup(); marker.openPopup(); }, 1400);
+  _cycleIdx++;
+}
 
-  setTimeout(() => map.invalidateSize(), 200);
+function updateMapStats(projects) {
+  const stats = document.getElementById('map-stats');
+  if (!stats) return;
+  const totalP   = projects.length;
+  const active   = projects.filter(p => ['Pilots','Go-to-Market','Scale-Up'].includes(p.status)).length;
+  const bedrijfN = new Set(projects.map(p => p.bedrijf).filter(Boolean)).size;
+  stats.innerHTML = `
+    <div class="map-stat"><div class="map-stat-n">${bedrijfN}</div><div class="map-stat-l">Bedrijven</div></div>
+    <div class="map-stat"><div class="map-stat-n">${totalP}</div><div class="map-stat-l">Projecten</div></div>
+    <div class="map-stat"><div class="map-stat-n">${active}</div><div class="map-stat-l">Actief</div></div>`;
 }
 
 
 // ─────────────────────────────────────────────────────────────
 // PIPELINE
 // ─────────────────────────────────────────────────────────────
-(function buildPipeline(){
+function renderPipeline(){
   const heads = document.getElementById('pipe-heads');
-  const cols = document.getElementById('pipe-cols');
-  STAGES.forEach(stage=>{
+  const cols  = document.getElementById('pipe-cols');
+  heads.innerHTML = '';
+  cols.innerHTML  = '';
+  cols.style.gridTemplateColumns = '';
+
+  const projects = getFilteredProjects();
+  if (projects.length === 0) {
+    cols.style.gridTemplateColumns = '1fr';
+    cols.innerHTML = emptyStateHTML();
+    return;
+  }
+
+  STAGES.forEach(stage => {
     const sc = SC[stage];
-    const ps = PROJECTS.filter(p=>p.status===stage);
-    // head
-    const h = document.createElement('div');
-    h.className='pipe-head';
-    h.style.borderTop=`3px solid ${sc.border}`;
-    h.innerHTML=`<div class="ph-left">
-      <div class="ph-label" style="color:${sc.text}">${stage}</div>
-      <div class="ph-desc">${STAGE_DESCS[stage]}</div>
+    const ps = projects.filter(p => p.status === stage);
+    const h  = document.createElement('div');
+    h.className     = 'pipe-head';
+    h.style.borderTop = `3px solid ${sc.border}`;
+    h.innerHTML = `<div class="ph-left">
+      <div class="ph-label" style="color:${sc.text}">${escapeHtml(stage)}</div>
+      <div class="ph-desc">${escapeHtml(STAGE_DESCS[stage] || '')}</div>
     </div>
     <div class="ph-count" style="color:${sc.text}">${ps.length}</div>`;
     heads.appendChild(h);
-    // col
+
     const col = document.createElement('div');
-    col.className='pipe-col';
-    col.style.cssText=`border:1.5px solid ${sc.border}20;background:${sc.bg};`;
-    ps.forEach(p=>{
-      const sc2 = SECTOR_C[p.sector];
-      const dots = Array.from({length:5},(_,i)=>`<div class="idot${i<p.impact?' on':''}"></div>`).join('');
+    col.className   = 'pipe-col';
+    col.style.cssText = `border:1.5px solid ${sc.border}20;background:${sc.bg};`;
+    ps.forEach(p => {
+      const sc2  = SECTOR_C[p.sector] || '#630d80';
+      const dots = Array.from({length:5}, (_, i) => `<div class="idot${i < (p.impact || 0) ? ' on' : ''}"></div>`).join('');
       const card = document.createElement('div');
-      card.className='proj-card';
-      card.style.borderLeftColor=sc2;
-      card.style.cursor='pointer';
-      card.innerHTML=`<div class="pc-co">${p.bedrijf}</div>
-        <div class="pc-title">${p.titel}</div>
+      card.className          = 'proj-card';
+      card.style.borderLeftColor = sc2;
+      card.style.cursor       = 'pointer';
+      card.innerHTML = `<div class="pc-co">${escapeHtml(p.bedrijf)}</div>
+        <div class="pc-title">${escapeHtml(p.titel)}</div>
         <div class="pc-foot">
-          <span class="pc-tag" style="background:${sc2}">${p.domein}</span>
+          <span class="pc-tag" style="background:${sc2}">${escapeHtml(p.domein || '')}</span>
           <div class="pc-impact">${dots}</div>
         </div>`;
-      card.addEventListener('click', ()=>openDetail(p));
+      card.addEventListener('click', () => openDetail(p));
       col.appendChild(card);
     });
     cols.appendChild(col);
   });
-})();
+}
 
 // ─────────────────────────────────────────────────────────────
 // BACKLOG
 // ─────────────────────────────────────────────────────────────
-(function buildBacklog(){
+function renderBacklog(){
   const grid = document.getElementById('bl-grid');
-  PROJECTS.forEach(p=>{
-    const sc = SECTOR_C[p.sector];
-    const statusClass = p.status.toLowerCase();
-    const impactPct = (p.impact/5)*100;
+  const wrap = document.getElementById('bl-wrap');
+  grid.innerHTML = '';
+  grid.style.gridTemplateColumns = '';
+  blScrollPos = 0;
+  if (wrap) wrap.scrollTop = 0;
+
+  const projects = getFilteredProjects();
+  if (projects.length === 0) {
+    grid.style.gridTemplateColumns = '1fr';
+    grid.innerHTML = emptyStateHTML();
+    return;
+  }
+
+  projects.forEach(p => {
+    const sc          = SECTOR_C[p.sector] || '#630d80';
+    const statusClass = (p.status || 'Idee').toLowerCase();
+    const impactPct   = ((p.impact || 0) / 5) * 100;
     const card = document.createElement('div');
-    card.className='bl-card';
-    card.style.cursor='pointer';
-    card.innerHTML=`<div class="bl-top">
+    card.className   = 'bl-card';
+    card.style.cursor = 'pointer';
+    card.innerHTML = `<div class="bl-top">
       <div class="bl-header">
-        <div class="bl-co" style="color:${sc}">${p.bedrijf}</div>
-        <span class="sbadge ${statusClass}">${p.status}</span>
+        <div class="bl-co" style="color:${sc}">${escapeHtml(p.bedrijf)}</div>
+        <span class="sbadge ${escapeHtml(statusClass)}">${escapeHtml(p.status || '')}</span>
       </div>
-      <div class="bl-title">${p.titel}</div>
-      <div class="bl-sub">${p.sub}</div>
+      <div class="bl-title">${escapeHtml(p.titel)}</div>
+      <div class="bl-sub">${escapeHtml(p.sub || '')}</div>
     </div>
     <div class="bl-bottom">
-      <div class="bl-desc">${p.desc}</div>
+      <div class="bl-desc">${escapeHtml(p.desc || '')}</div>
       <div class="bl-impact">
         <div class="bl-impact-bar">
           <div class="bl-impact-fill" style="height:${impactPct}%;background:${sc}"></div>
@@ -1230,71 +1604,97 @@ function initMap(){
         <div class="bl-impact-label">Impact</div>
       </div>
     </div>`;
-    card.addEventListener('click', ()=>openDetail(p));
+    card.addEventListener('click', () => openDetail(p));
     grid.appendChild(card);
   });
+}
 
-  // Auto-scroll
+// Auto-scroll backlog (loopt continu, doet niets als andere view actief is)
+setInterval(() => {
+  if (cur !== 2) return;
   const wrap = document.getElementById('bl-wrap');
-  setInterval(()=>{
-    if(cur!==2) return;
-    const max = wrap.scrollHeight - wrap.clientHeight;
-    if(max<=0) return;
-    blScrollPos += 0.6;
-    if(blScrollPos > max) blScrollPos = 0;
-    wrap.scrollTop = blScrollPos;
-  }, 16);
-})();
+  if (!wrap) return;
+  const max = wrap.scrollHeight - wrap.clientHeight;
+  if (max <= 0) return;
+  blScrollPos += 0.6;
+  if (blScrollPos > max) blScrollPos = 0;
+  wrap.scrollTop = blScrollPos;
+}, 16);
 
 // ─────────────────────────────────────────────────────────────
 // KPI
 // ─────────────────────────────────────────────────────────────
-(function buildKPI(){
+function renderKPI(){
   const top = document.getElementById('kpi-top');
   const mid = document.getElementById('kpi-mid');
   const bot = document.getElementById('kpi-bottom');
+  top.innerHTML = '';
+  mid.innerHTML = '';
+  bot.innerHTML = '';
+  top.style.gridTemplateColumns = '';
 
-  const inProductie = PROJECTS.filter(p=>['Go-to-Market','Scale-Up'].includes(p.status)).length;
-  const hoogImpact  = PROJECTS.filter(p=>p.impact>=4).length;
+  const projects = getFilteredProjects();
+  const filtered = isAnyFilterActive();
+
+  if (projects.length === 0) {
+    top.style.gridTemplateColumns = '1fr';
+    top.innerHTML = emptyStateHTML();
+    return;
+  }
+
+  const inProductie     = projects.filter(p => ['Go-to-Market','Scale-Up'].includes(p.status)).length;
+  const hoogImpact      = projects.filter(p => (p.impact || 0) >= 4).length;
+  const uniqueBedrijven = new Set(projects.map(p => p.bedrijf).filter(Boolean)).size;
+  const totalP          = projects.length;
 
   const kpis = [
-    {n:21,                  label:'TBI-bedrijven',  sub:'Betrokken in AI-programma',    icon:'🏢', delta:'+3 dit kwartaal'},
-    {n:PROJECTS.length,     label:'AI-projecten',   sub:'In de portfolio',              icon:'🚀', delta:'+4 dit kwartaal'},
-    {n:inProductie,         label:'In Productie',   sub:'Go-to-Market + Scale-Up',      icon:'⚡', delta:'2× vs vorig jaar'},
-    {n:Math.round(hoogImpact/PROJECTS.length*100), label:'Hoog Impact', sub:'Score 4 of hoger (%)', icon:'🎯', delta:`${hoogImpact} projecten`},
+    { n: filtered ? uniqueBedrijven : 21,
+      label: 'TBI-bedrijven',
+      sub:   filtered ? 'In huidige selectie' : 'Betrokken in AI-programma',
+      icon:  '🏢',
+      delta: filtered ? null : '+3 dit kwartaal' },
+    { n: totalP,
+      label: 'AI-projecten',
+      sub:   filtered ? 'Match in filter' : 'In de portfolio',
+      icon:  '🚀',
+      delta: filtered ? null : '+4 dit kwartaal' },
+    { n: inProductie,
+      label: 'In Productie',
+      sub:   'Go-to-Market + Scale-Up',
+      icon:  '⚡',
+      delta: filtered ? null : '2× vs vorig jaar' },
+    { n: totalP ? Math.round(hoogImpact / totalP * 100) : 0,
+      label: 'Hoog Impact',
+      sub:   'Score 4 of hoger (%)',
+      icon:  '🎯',
+      delta: `${hoogImpact} projecten`,
+      isPercent: true },
   ];
 
-  kpis.forEach(k=>{
+  kpis.forEach(k => {
     const el = document.createElement('div');
-    el.className='kpi-card';
-    el.innerHTML=`<span class="kpi-icon">${k.icon}</span>
-      <div class="kpi-n" data-target="${k.n}">0</div>
-      <div class="kpi-label">${k.label}</div>
-      <div class="kpi-sub">${k.sub}</div>
-      <div class="kpi-delta">↑ ${k.delta}</div>`;
+    el.className = 'kpi-card';
+    el.innerHTML = `<span class="kpi-icon">${k.icon}</span>
+      <div class="kpi-n" data-target="${k.n}"${k.isPercent ? ' data-percent="1"' : ''}>0</div>
+      <div class="kpi-label">${escapeHtml(k.label)}</div>
+      <div class="kpi-sub">${escapeHtml(k.sub)}</div>
+      ${k.delta ? `<div class="kpi-delta">↑ ${escapeHtml(k.delta)}</div>` : ''}`;
     top.appendChild(el);
   });
 
   // PMC fase balken
-  const phases = [
-    {stage:'Idee',          color: PMC['Idee'].dot},
-    {stage:'Prototype',     color: PMC['Prototype'].dot},
-    {stage:'Pilots',        color: PMC['Pilots'].dot},
-    {stage:'Go-to-Market',  color: PMC['Go-to-Market'].dot},
-    {stage:'Scale-Up',      color: PMC['Scale-Up'].dot},
-  ];
-  const totalP = PROJECTS.length;
-  phases.forEach(ph=>{
-    const cnt = PROJECTS.filter(p=>p.status===ph.stage).length;
-    const pct = Math.round(cnt/totalP*100);
+  STAGES.forEach(stage => {
+    const color = PMC[stage].dot;
+    const cnt   = projects.filter(p => p.status === stage).length;
+    const pct   = totalP ? Math.round(cnt / totalP * 100) : 0;
     const el = document.createElement('div');
-    el.className='phase-bar-card';
-    el.innerHTML=`<div class="phase-bar-title" style="color:${ph.color}">${ph.stage}</div>
+    el.className = 'phase-bar-card';
+    el.innerHTML = `<div class="phase-bar-title" style="color:${color}">${escapeHtml(stage)}</div>
       <div class="phase-bar-track">
-        <div class="phase-bar-fill" style="width:${pct}%;background:${ph.color}"></div>
+        <div class="phase-bar-fill" style="width:${pct}%;background:${color}"></div>
       </div>
       <div class="phase-bar-bottom">
-        <div class="phase-bar-count" style="color:${ph.color}">${cnt}</div>
+        <div class="phase-bar-count" style="color:${color}">${cnt}</div>
         <div class="phase-bar-label">${pct}% van portfolio</div>
       </div>`;
     mid.appendChild(el);
@@ -1303,49 +1703,69 @@ function initMap(){
   // Sectordistributie + ACI badge
   const sectors = ['TECHNIEK','BOUW','INFRA','HOLDING'];
   const sDiv = document.createElement('div');
-  sDiv.innerHTML=`<div class="kpi-bottom-title">Verdeling per sector</div>
-    <div class="sector-pills">${sectors.map(s=>{
-      const cnt = PROJECTS.filter(p=>p.sector===s).length;
-      const c = SECTOR_C[s];
+  sDiv.innerHTML = `<div class="kpi-bottom-title">Verdeling per sector</div>
+    <div class="sector-pills">${sectors.map(s => {
+      const cnt = projects.filter(p => p.sector === s).length;
+      const c   = SECTOR_C[s];
       return `<div class="sector-pill" style="background:${c}10;border:1.5px solid ${c}30">
         <div class="ldot" style="background:${c}"></div>
-        <span style="font-size:.7rem;font-weight:700;color:${c}">${s}</span>
+        <span style="font-size:.7rem;font-weight:700;color:${c}">${escapeHtml(s)}</span>
         <span class="sector-count" style="color:${c}">${cnt}</span>
       </div>`;
     }).join('')}</div>`;
   bot.appendChild(sDiv);
 
   const aci = document.createElement('div');
-  aci.className='aci-badge';
-  aci.innerHTML=`<div class="aci-badge-title">Strategie</div>
+  aci.className = 'aci-badge';
+  aci.innerHTML = `<div class="aci-badge-title">Strategie</div>
     <div class="aci-badge-main">Augmented Collective Intelligence</div>
     <div class="aci-badge-sub">AI als activator van humaan kapitaal · TBI 2025–2028</div>`;
   bot.appendChild(aci);
 
-  // Counter animatie — elke keer dat KPI view actief wordt
-  function animCounters(){
-    top.querySelectorAll('[data-target]').forEach(el=>{
-      const target = parseInt(el.dataset.target);
-      const isPercent = el.parentElement.querySelector('.kpi-label')?.textContent === 'Hoog Impact';
-      let cur2=0;
-      const step=Math.max(1,Math.ceil(target/30));
-      const iv=setInterval(()=>{
-        cur2=Math.min(cur2+step,target);
-        el.textContent=cur2+(isPercent?'%':'');
-        if(cur2>=target) clearInterval(iv);
-      },40);
-    });
+  // Direct animeren als KPI-view nu actief is, anders gebeurt dat via observer
+  if (views[3] && views[3].classList.contains('active')) {
+    setTimeout(animKPICounters, 80);
   }
+}
 
-  const kpiObs=new MutationObserver(()=>{
-    if(views[3].classList.contains('active')){
-      // Reset naar 0 en heranimeer
-      top.querySelectorAll('[data-target]').forEach(el=>el.textContent='0');
-      setTimeout(animCounters, 200);
+function animKPICounters(){
+  const top = document.getElementById('kpi-top');
+  if (!top) return;
+  top.querySelectorAll('[data-target]').forEach(el => {
+    const target    = parseInt(el.dataset.target) || 0;
+    const isPercent = el.dataset.percent === '1';
+    let cur2  = 0;
+    const step = Math.max(1, Math.ceil(target / 30));
+    el.textContent = '0' + (isPercent ? '%' : '');
+    const iv = setInterval(() => {
+      cur2 = Math.min(cur2 + step, target);
+      el.textContent = cur2 + (isPercent ? '%' : '');
+      if (cur2 >= target) clearInterval(iv);
+    }, 40);
+  });
+}
+
+function setupKPIObserver(){
+  const kpiObs = new MutationObserver(() => {
+    if (views[3].classList.contains('active')) {
+      const top = document.getElementById('kpi-top');
+      if (top) top.querySelectorAll('[data-target]').forEach(el => {
+        el.textContent = el.dataset.percent === '1' ? '0%' : '0';
+      });
+      setTimeout(animKPICounters, 200);
     }
   });
-  kpiObs.observe(views[3],{attributes:true,attributeFilter:['class']});
-})();
+  kpiObs.observe(views[3], { attributes: true, attributeFilter: ['class'] });
+}
+
+// ─────────────────────────────────────────────────────────────
+// EERSTE RENDER — views opbouwen vóór rotatie start
+// ─────────────────────────────────────────────────────────────
+renderPipeline();
+renderBacklog();
+renderKPI();
+setupKPIObserver();
+updateFilterAffordances();
 
 // ─────────────────────────────────────────────────────────────
 // START — wacht op volledig geladen DOM + CSS
@@ -1379,7 +1799,7 @@ if (document.readyState === 'complete') {
 <!-- Versienummer -->
 <div style="position:fixed;bottom:14px;right:22px;font-size:.62rem;font-weight:600;
   color:rgba(99,13,128,.35);z-index:998;letter-spacing:.3px;pointer-events:none;">
-  TBI AI Dashboard v2.2 &nbsp;·&nbsp; SparkOptimus v2.0
+  TBI AI Dashboard v2.3 &nbsp;·&nbsp; SparkOptimus v2.0
 </div>
 
 </body>
