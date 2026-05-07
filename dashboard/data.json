@@ -1,6 +1,35 @@
 {
   "projects": [
     {
+      "id": 11,
+      "titel": "[TEST] Verificatie PR #10 - regex anchor + race fix",
+      "sub": "Risico & Kwaliteitsbeheersing",
+      "bedrijf": "Mobilis",
+      "sector": "INFRA",
+      "status": "Go-to-Market",
+      "domein": "risico",
+      "impact": 5,
+      "desc": "Verificatie-input voor PR #10 fixes:",
+      "locatie": "Ringwade 71, Nieuwegein",
+      "milestone": "Q2 2026",
+      "url": "https://github.com/TBI-AI-team/tbi-ai-backlog/issues/11",
+      "created_at": "2026-05-07T13:07:58Z",
+      "updated_at": "2026-05-07T13:12:07Z",
+      "labels": [
+        "verandering: hoog",
+        "test:audit-fix-verification",
+        "bedrijf: Mobilis",
+        "sector: INFRA",
+        "fase: Go-to-Market",
+        "kleur: groen",
+        "financiering: bedrijf-primair",
+        "impact: 5",
+        "aci: agent",
+        "domein: risico"
+      ],
+      "closed": false
+    },
+    {
       "id": 9,
       "titel": "[TEST] Audit-fix verificatie - regex en injection (auto-test)",
       "sub": "Werkvoorbereiding & Planning",
@@ -135,20 +164,23 @@
     }
   ],
   "stats": {
-    "total": 5,
-    "open": 4,
+    "total": 6,
+    "open": 5,
     "by_fase": {
+      "Go-to-Market": 1,
       "Operate": 1,
       "Idee": 4
     },
     "by_sector": {
+      "INFRA": 1,
       "BOUW": 1,
       "OVERIG": 4
     },
     "by_bedrijf": {
+      "Mobilis": 1,
       "ERA Contour": 1,
       "": 4
     },
-    "generated": "2026-05-07T13:05:20.553Z"
+    "generated": "2026-05-07T13:12:26.190Z"
   }
 }
