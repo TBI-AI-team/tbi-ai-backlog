@@ -2,9 +2,12 @@ name: 📊 Dashboard Data Update
 
 on:
   issues:
-    types: [opened, closed, labeled, unlabeled, edited]
+    types: [closed, labeled, unlabeled, edited]
   schedule:
     - cron: '0 6 * * *'   # Dagelijks om 06:00 UTC (08:00 NL tijd)
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   issues: read
@@ -46,7 +49,7 @@ jobs:
             // ── Helper: parse form field uit issue body ────────────────────
             function parseField(body, label) {
               const regex = new RegExp(
-                `###\\s+${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=\\s|\\(|\$|\\n)[^\\n]*\\n+([\\s\\S]*?)(?=\\n###|\\n---|\$)`,
+                `(?:^|\\n)###\\s+${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=\\s|\\(|\$|\\n)[^\\n]*\\n+([\\s\\S]*?)(?=\\n###|\\n---|\$)`,
                 'i'
               );
               const m = (body || '').match(regex);
