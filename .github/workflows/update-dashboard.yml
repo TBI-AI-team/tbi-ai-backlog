@@ -46,7 +46,7 @@ jobs:
             // ── Helper: parse form field uit issue body ────────────────────
             function parseField(body, label) {
               const regex = new RegExp(
-                `###\\s+${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\n+([\\s\\S]*?)(?=\\n###|\\n---|\$)`,
+                `###\\s+${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=\\s|\\(|\$|\\n)[^\\n]*\\n+([\\s\\S]*?)(?=\\n###|\\n---|\$)`,
                 'i'
               );
               const m = (body || '').match(regex);
@@ -65,7 +65,7 @@ jobs:
                 const body       = issue.body || '';
                 const bedrijf    = parseField(body, 'TBI Bedrijf')   || getLabel(issue, 'bedrijf');
                 const sector     = parseField(body, 'Sector')        || getLabel(issue, 'sector');
-                const fase       = getLabel(issue, 'fase')           || parseField(body, 'Startfase').split(' —')[0];
+                const fase       = getLabel(issue, 'fase')           || parseField(body, 'PMC Startfase').split(' —')[0];
                 const domein     = getLabel(issue, 'domein')         || parseField(body, 'Primair domein').split(' &')[0];
                 const impactRaw  = getLabel(issue, 'impact')        || parseField(body, 'Verwachte impact');
                 const impact     = parseInt(impactRaw) || 3;
