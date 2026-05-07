@@ -424,9 +424,9 @@ textarea{resize:vertical;min-height:90px;line-height:1.6;}
         <div class="field">
           <div class="field-label">ACI-fase</div>
           <select id="aci">
-            <option>Fase 1 — Assistent (individu)</option>
-            <option>Fase 2 — Digitale collega (team)</option>
-            <option>Fase 3 — Agent (autonoom)</option>
+            <option>Assistent — AI ondersteunt individuele medewerker (fase 1)</option>
+            <option>Digitale collega — AI werkt samen in een team (fase 2)</option>
+            <option>Agent — AI handelt autonoom namens een proces (fase 3)</option>
           </select>
         </div>
       </div>
@@ -592,6 +592,7 @@ textarea{resize:vertical;min-height:90px;line-height:1.6;}
 </div><!-- /.form-card -->
 </main>
 
+<script src="companies.js"></script>
 <script>
 let currentStep = 1;
 let selectedFase = 'Fase 1 — Idee';
@@ -751,56 +752,61 @@ function v(id) {
 }
 
 // ── SUBMIT ──────────────────────────────────────────────────
+//
+// Body shape spiegelt exact .github/ISSUE_TEMPLATE/ai-initiatief.yml's rendering:
+// elk veld als `### Heading\n\nvalue\n\n` met de exacte heading-tekst van de template
+// (inclusief decoratie zoals `(adres)`, `(1–5)`, `(situatie · complicatie · ...)`,
+// em-dashes). Workflows gebruiken één extractField/parseField regex die op deze
+// schema werkt. Lege velden → '—' zodat het schema consistent blijft.
+//
+// Locatie + sector worden auto-derived uit dashboard/companies.js o.b.v. het
+// gekozen bedrijf (zie ook de bedrijf-change handler aan het einde van deze file).
 function submit() {
-  const gonogo = [...document.querySelectorAll('input[name=gngo]:checked')].map(cb => `- [x] ${cb.value}`).join('\n');
-  const body = `## TBI AI Initiatiefkaart
+  // Auto-derive locatie uit bedrijf via shared companies.js
+  const selectedBedrijf = v('bedrijf');
+  const company = (typeof TBI_COMPANIES !== 'undefined') && TBI_COMPANIES[selectedBedrijf];
+  const locatie = (company && company.address) || '';
 
-**Bedrijf:** ${v('bedrijf')}
-**Sector:** ${v('sector')}
-**Ambassadeur:** ${v('ambassadeur')}
-**Eigenaar:** ${v('eigenaar')}
-**Adoptieverantwoordelijke:** ${v('adoptie') || '—'}
+  // Bouw Go/No-Go content (lege selectie → expliciete placeholder zodat schema consistent blijft)
+  const gonogoChecked = [...document.querySelectorAll('input[name=gngo]:checked')]
+    .map(cb => `- [x] ${cb.value}`).join('\n');
+  const gonogoBody = gonogoChecked || '_Geen criteria aangevinkt._';
 
----
+  // Helper: emit een `### Heading\n\nvalue\n\n` blok. Lege values → '—'.
+  const emitField = (heading, val) => {
+    const safe = (val == null || val === '') ? '—' : val;
+    return `### ${heading}\n\n${safe}\n\n`;
+  };
 
-### 🎯 Doelstelling
-${v('doelstelling')}
+  // 21 velden in dezelfde volgorde als de issue-template ze rendert.
+  const body =
+    emitField('TBI Bedrijf', selectedBedrijf) +
+    emitField('Sector', v('sector')) +
+    emitField('Ambassadeur (Directielid)', v('ambassadeur')) +
+    emitField('Eigenaar initiatief', v('eigenaar')) +
+    emitField('Adoptieverantwoordelijke', v('adoptie')) +
+    emitField('Locatie hoofdkantoor (adres)', locatie) +
+    emitField('Doelstelling', v('doelstelling')) +
+    emitField('Aansluiting bij TBI AI Strategie (ACI-fase)', v('aci')) +
+    emitField('Algemene omschrijving (situatie · complicatie · beoogde oplossing)', v('omschrijving')) +
+    emitField('Primair domein', v('domein')) +
+    emitField('Welk deel van de organisatie raakt dit?', v('orgdeel')) +
+    emitField('Welke processen raakt dit?', v('processen')) +
+    emitField('Welke teamleden zijn nodig voor het initiatief?', v('teamleden')) +
+    emitField('Verwachte veranderingsbereidheid', v('verandering')) +
+    emitField('PMC Startfase', selectedFase) +
+    emitField('Financiering', selectedFaseFin) +
+    emitField('Go/No-Go criteria — huidige fase', gonogoBody) +
+    emitField('Wanneer is het initiatief geslaagd?', v('succes')) +
+    emitField('KPI & KPI-boom', v('kpi')) +
+    emitField('Verwachte impact (1–5)', `${selectedImpact} — ${impactLabels[selectedImpact]}`) +
+    emitField('Afstemming',
+      '- [x] De ambassadeur (directielid) is akkoord met indiening van dit initiatief\n\n' +
+      '_(Optionele checkboxen niet via dashboard-formulier gevraagd.)_'
+    ) +
+    `---\n*Ingediend via TBI AI Dashboard · SparkOptimus v2.0*\n`;
 
-**Domein:** ${v('domein')}
-**ACI-fase:** ${v('aci')}
-
-### 📋 Omschrijving
-${v('omschrijving')}
-
----
-
-### 🔧 Benodigdheden
-**Organisatiedeel:** ${v('orgdeel') || '—'}
-**Processen:** ${v('processen') || '—'}
-**Teamleden:**
-${v('teamleden') || '—'}
-**Veranderingsbereidheid:** ${v('verandering')}
-
-### PMC Fase & Financiering
-**Fase:** ${selectedFase}
-**Financiering:** ${selectedFaseFin}
-
-${gonogo ? `### Go/No-Go criteria\n${gonogo}` : ''}
-
----
-
-### ✅ Succesdefinitie
-${v('succes')}
-
-**KPI's:**
-${v('kpi') || '—'}
-
-**Verwachte impact:** ${selectedImpact}/5 — ${impactLabels[selectedImpact]}
-
----
-*Ingediend via TBI AI Dashboard · SparkOptimus v2.0*`;
-
-  const title = `[INITIATIEF] ${v('naam')} — ${v('bedrijf')}`;
+  const title = `[INITIATIEF] ${v('naam')} — ${selectedBedrijf}`;
   const url = `https://github.com/TBI-AI-team/tbi-ai-backlog/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&labels=status%3A+nieuw`;
 
   window.open(url, '_blank');
@@ -812,6 +818,23 @@ ${v('kpi') || '—'}
     document.getElementById('success-screen').style.display = 'block';
   }, 800);
 }
+
+// Auto-fill sector dropdown wanneer bedrijf wijzigt — gebruiker kan altijd overriden.
+// Mapping: companies.js gebruikt TBI corporate sector-namen (TECHNIEK/BOUW/INFRA/HOLDING);
+// dashboard form's sector dropdown heeft langere labels die deze prefixen bevatten.
+document.getElementById('bedrijf')?.addEventListener('change', e => {
+  const company = (typeof TBI_COMPANIES !== 'undefined') && TBI_COMPANIES[e.target.value];
+  if (!company || !company.sector) return;
+  const sectorMap = {
+    'TECHNIEK': 'TECHNIEK',
+    'BOUW':     'BOUW & ONTWIKKELING',
+    'INFRA':    'INFRA',
+    'HOLDING':  'HOLDING / SSC ICT',
+  };
+  const sectorText = sectorMap[company.sector];
+  const sectorSelect = document.getElementById('sector');
+  if (sectorText && sectorSelect) sectorSelect.value = sectorText;
+});
 </script>
 </body>
 </html>

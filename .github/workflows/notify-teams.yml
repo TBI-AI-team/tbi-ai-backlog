@@ -12,7 +12,10 @@ jobs:
   notify-new-initiatief:
     name: Notify Teams via Power Automate
     runs-on: ubuntu-latest
-    if: github.event_name == 'issues' && github.event.action == 'opened'
+    if: >-
+      github.event_name == 'issues'
+      && github.event.action == 'opened'
+      && !contains(github.event.issue.title, '[TEST]')
 
     steps:
       - name: "🔍 Parse issue"
@@ -37,7 +40,16 @@ jobs:
             const domein      = extractField(body, 'Primair domein');
             const fase        = extractField(body, 'PMC Startfase').split(' —')[0];
             const impact      = extractField(body, 'Verwachte impact').split(' —')[0];
-            const doelstelling = extractField(body, 'Doelstelling').substring(0, 100);
+            // Doelstelling truncate: 300 char cap. Knip op laatste spatie ≥ 200,
+            // anders mid-woord knip + '…'. De 200-floor voorkomt dat een 300-char
+            // stuk zonder late spatie (bv. lange URL) terug-truncated wordt naar
+            // vrijwel niets.
+            let doelstelling = extractField(body, 'Doelstelling');
+            if (doelstelling.length > 300) {
+              const cut = doelstelling.substring(0, 300);
+              const lastSpace = cut.lastIndexOf(' ');
+              doelstelling = (lastSpace > 200 ? cut.substring(0, lastSpace) : cut) + '…';
+            }
 
             core.setOutput('bedrijf',      bedrijf);
             core.setOutput('ambassadeur',  ambassadeur);
@@ -119,7 +131,7 @@ jobs:
                     },
                     {
                       type: "TextBlock",
-                      text: "**Doelstelling:** \($doelstelling)...",
+                      text: "**Doelstelling:** \($doelstelling)",
                       wrap: true,
                       spacing: "Medium"
                     }
