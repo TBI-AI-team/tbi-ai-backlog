@@ -22,7 +22,7 @@ en te volgen.
 
 ### 1. Ga naar de repository
 
-👉 [github.com/tbi-holdings/tbi-ai-backlog](https://github.com/tbi-holdings/tbi-ai-backlog)
+👉 [github.com/TBI-AI-team/tbi-ai-backlog](https://github.com/TBI-AI-team/tbi-ai-backlog)
 
 Je hebt een GitHub-account nodig. Heb je die nog niet?
 Ga naar [github.com/signup](https://github.com/signup) — gratis, 2 minuten.
@@ -101,7 +101,7 @@ Zet notificaties aan voor je issue (rechtsboven: Notifications → Subscribe).
 Je ontvangt dan een e-mail bij elk update.
 
 **2. Via het live dashboard**
-👉 [tbi-holdings.github.io/tbi-ai-backlog](https://tbi-holdings.github.io/tbi-ai-backlog)
+👉 [tbi-ai-team.github.io/tbi-ai-backlog](https://tbi-ai-team.github.io/tbi-ai-backlog)
 
 Jouw initiatief verschijnt op de kaart (bij je hoofdkantoor), in de pipeline en in de backlog.
 

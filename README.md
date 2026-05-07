@@ -50,7 +50,7 @@ npm install @octokit/rest
 export GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxx
 
 # Voer setup uit
-node scripts/setup-labels.js tbi-holdings tbi-ai-backlog
+node scripts/setup-labels.js TBI-AI-team tbi-ai-backlog
 ```
 
 ### Stap 3 — Secrets instellen
@@ -145,7 +145,7 @@ is:open label:stale
 
 Na setup is het dashboard beschikbaar op:
 ```
-https://tbi-holdings.github.io/tbi-ai-backlog/
+https://tbi-ai-team.github.io/tbi-ai-backlog/
 ```
 
 Het dashboard toont:
