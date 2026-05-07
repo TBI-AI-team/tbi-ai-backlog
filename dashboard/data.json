@@ -6,7 +6,7 @@
       "sub": "Werkvoorbereiding & Planning",
       "bedrijf": "ERA Contour",
       "sector": "BOUW",
-      "status": "Pilots",
+      "status": "Operate",
       "domein": "werkvoorbereiding",
       "impact": 3,
       "desc": "Test-input voor verificatie van regex- en injectie-fixes:",
@@ -14,7 +14,7 @@
       "milestone": "Q2 2026",
       "url": "https://github.com/TBI-AI-team/tbi-ai-backlog/issues/9",
       "created_at": "2026-05-07T11:12:14Z",
-      "updated_at": "2026-05-07T11:19:07Z",
+      "updated_at": "2026-05-07T11:24:41Z",
       "labels": [
         "impact: 3",
         "bedrijf: ERA Contour",
@@ -27,7 +27,7 @@
         "domein: werkvoorbereiding",
         "test:audit-fix-verification"
       ],
-      "closed": false
+      "closed": true
     },
     {
       "id": 5,
@@ -136,9 +136,9 @@
   ],
   "stats": {
     "total": 5,
-    "open": 5,
+    "open": 4,
     "by_fase": {
-      "Pilots": 1,
+      "Operate": 1,
       "Idee": 4
     },
     "by_sector": {
@@ -149,6 +149,6 @@
       "ERA Contour": 1,
       "": 4
     },
-    "generated": "2026-05-07T11:19:25.839Z"
+    "generated": "2026-05-07T11:24:52.754Z"
   }
 }
