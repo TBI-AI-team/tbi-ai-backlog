@@ -6,7 +6,7 @@
       "sub": "Risico & Kwaliteitsbeheersing",
       "bedrijf": "Mobilis",
       "sector": "INFRA",
-      "status": "Go-to-Market",
+      "status": "Operate",
       "domein": "risico",
       "impact": 5,
       "desc": "Verificatie-input voor PR #10 fixes:",
@@ -14,7 +14,7 @@
       "milestone": "Q2 2026",
       "url": "https://github.com/TBI-AI-team/tbi-ai-backlog/issues/11",
       "created_at": "2026-05-07T13:07:58Z",
-      "updated_at": "2026-05-07T13:12:07Z",
+      "updated_at": "2026-05-07T13:40:48Z",
       "labels": [
         "verandering: hoog",
         "test:audit-fix-verification",
@@ -27,7 +27,7 @@
         "aci: agent",
         "domein: risico"
       ],
-      "closed": false
+      "closed": true
     },
     {
       "id": 9,
@@ -165,10 +165,9 @@
   ],
   "stats": {
     "total": 6,
-    "open": 5,
+    "open": 4,
     "by_fase": {
-      "Go-to-Market": 1,
-      "Operate": 1,
+      "Operate": 2,
       "Idee": 4
     },
     "by_sector": {
@@ -181,6 +180,6 @@
       "ERA Contour": 1,
       "": 4
     },
-    "generated": "2026-05-07T13:12:26.190Z"
+    "generated": "2026-05-07T13:41:00.749Z"
   }
 }
