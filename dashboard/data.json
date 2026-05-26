@@ -72,7 +72,7 @@
       "milestone": "Q2 2026",
       "url": "https://github.com/TBI-AI-team/tbi-ai-backlog/issues/5",
       "created_at": "2026-05-07T08:09:04Z",
-      "updated_at": "2026-05-07T08:09:18Z",
+      "updated_at": "2026-05-25T11:06:07Z",
       "labels": [
         "sector: OVERIG",
         "fase: Idee",
@@ -80,7 +80,8 @@
         "financiering: holding-fonds",
         "impact: 3",
         "aci: assistent",
-        "verandering: gemiddeld"
+        "verandering: gemiddeld",
+        "stale"
       ],
       "closed": false
     },
@@ -98,7 +99,7 @@
       "milestone": "Q2 2026",
       "url": "https://github.com/TBI-AI-team/tbi-ai-backlog/issues/3",
       "created_at": "2026-05-06T13:30:34Z",
-      "updated_at": "2026-05-06T13:30:50Z",
+      "updated_at": "2026-05-25T11:06:09Z",
       "labels": [
         "sector: OVERIG",
         "fase: Idee",
@@ -106,7 +107,8 @@
         "financiering: holding-fonds",
         "impact: 3",
         "aci: assistent",
-        "verandering: gemiddeld"
+        "verandering: gemiddeld",
+        "stale"
       ],
       "closed": false
     },
@@ -124,7 +126,7 @@
       "milestone": "Q2 2026",
       "url": "https://github.com/TBI-AI-team/tbi-ai-backlog/issues/2",
       "created_at": "2026-05-06T13:27:37Z",
-      "updated_at": "2026-05-06T13:27:53Z",
+      "updated_at": "2026-05-25T11:06:11Z",
       "labels": [
         "sector: OVERIG",
         "fase: Idee",
@@ -132,7 +134,8 @@
         "financiering: holding-fonds",
         "impact: 3",
         "aci: assistent",
-        "verandering: gemiddeld"
+        "verandering: gemiddeld",
+        "stale"
       ],
       "closed": false
     },
@@ -150,7 +153,7 @@
       "milestone": "Q2 2026",
       "url": "https://github.com/TBI-AI-team/tbi-ai-backlog/issues/1",
       "created_at": "2026-05-06T13:09:37Z",
-      "updated_at": "2026-05-06T13:09:55Z",
+      "updated_at": "2026-05-25T11:06:13Z",
       "labels": [
         "sector: OVERIG",
         "fase: Idee",
@@ -158,7 +161,8 @@
         "financiering: holding-fonds",
         "impact: 3",
         "aci: assistent",
-        "verandering: gemiddeld"
+        "verandering: gemiddeld",
+        "stale"
       ],
       "closed": false
     }
@@ -180,6 +184,6 @@
       "ERA Contour": 1,
       "": 4
     },
-    "generated": "2026-05-25T10:07:56.407Z"
+    "generated": "2026-05-26T09:57:45.763Z"
   }
 }
